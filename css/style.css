@@ -1,0 +1,53 @@
+/* variables */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Roboto:wght@400;500&display=swap');
+
+:root {
+    --color-fondo: #0a0a0a;
+    --color-panel: #161616;
+    --color-texto: #e5e5e5;
+    
+    /* Acentos */
+    --color-acento-rojo: #ff0038;
+    --color-acento-azul: #00d9ff;
+    --color-exito: #00ff6a;
+    
+    /* estetica */
+    --borde-fino: 1px solid rgba(255, 255, 255, 0.1);
+    --sombra-elevada: 0 4px 10px rgba(0, 0, 0, 0.5);
+    
+    --radio-borde: 8px;
+    
+    --transicion-suave: all 0.3s ease-out;
+}
+
+/* estructura base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-fondo);
+    /* fibra de carbono */
+    background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+    color: var(--color-texto);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden; /* que no tenga croll horizontal */
+    justify-content: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* titulos */
+h1, h2, h3 {
+    font-family: 'Chakra Petch', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    text-align: center;
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventura en el Reino de JS</title>
+    <link rel="icon" type="image/png" href="assets/items/espada.png">
+
+    <!-- fuentes para css: Chakra Petch y Roboto (cargadas aqui para avitar el error del navegador) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="js/main.js" type="module" defer></script>
+</head>
+<body>
+
+    <main id="escena-inicio" class="escena activa">
+        <h1>Aventura en el Reino JS</h1>
+        <div class="contenedor-central">
+            <div class="tarjeta-jugador glass-panel">
+                <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
+                <h2>Cazador</h2>
+                <div class="stats-jugador"></div>
+            </div>
+        </div>
+        <div class="botonera">
+            <button id="btn-ir-mercado" class="btn-primario">Ir al Mercado</button>
+        </div>
+    </main>
+
+    <main id="escena-mercado" class="escena">
+        <h1>Mercado Negro</h1>
+        <div id="tienda-productos" class="grid-productos"></div>
+        
+        <div class="panel-inferior glass-panel">
+            <h3>Tu Cesta:</h3>
+            <div class="cesta-visual"></div>
+            <button id="btn-ir-stats" class="btn-primario">Confirmar Compra</button>
+        </div>
+    </main>
+
+    <main id="escena-stats" class="escena">
+        <h1>Equipo Confirmado</h1>
+        <div class="contenedor-central">
+            <div class="tarjeta-jugador glass-panel">
+                <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
+                <h2>Cazador (Equipado)</h2>
+                <div class="stats-jugador"></div>
+            </div>
+            <div class="cesta-visual glass-panel"></div>
+        </div>
+        <div class="botonera">
+            <button id="btn-ir-enemigos" class="btn-primario">Buscar Enemigos</button>
+        </div>
+    </main>
+
+    <main id="escena-enemigos" class="escena">
+        <h1>Enemigos Avistados</h1>
+        <div id="lista-enemigos" class="grid-enemigos"></div>
+        <div class="botonera">
+            <button id="btn-iniciar-batallas" class="btn-rojo">¡A Luchar!</button>
+        </div>
+    </main>
+
+    <main id="escena-batallas" class="escena">
+        <h1>Campo de Batalla</h1>
+        <div class="interfaz-combate">
+            <div class="panel-jugador glass-panel slide-left">
+                <h3>Tú</h3>
+                <div class="stats-jugador"></div>
+            </div>
+            <div class="vs">VS</div>
+            <div class="panel-enemigo glass-panel slide-right">
+                <h3>Enemigo</h3>
+                <img src="assets/avatars/espada_combate.png" alt="Combate" style="width: 50px; opacity: 0.5;">
+            </div>
+        </div>
+
+        <div id="log-batalla" class="caja-log glass-panel"></div>
+
+        <div class="botonera">
+            <button id="btn-siguiente-batalla" class="btn-primario" style="display:none;">Continuar</button>
+        </div>
+        
+        <div class="cesta-visual footer-inventario"></div>
+    </main>
+
+    <main id="escena-final" class="escena">
+        <h1>Fin de la Aventura</h1>
+        <div class="resultado-caja glass-panel">
+            <h2 id="rango-final"></h2>
+            <h3 id="puntos-finales"></h3>
+        </div>
+        <div class="botonera">
+            <button id="btn-reiniciar" class="btn-primario">Volver a Jugar</button>
+        </div>
+    </main>
+
+</body>
+</html>
