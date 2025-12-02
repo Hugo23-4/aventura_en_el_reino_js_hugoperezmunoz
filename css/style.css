@@ -187,3 +187,33 @@ button:hover {
     background: rgba(0, 255, 106, 0.05);
 }
 .comprado button { background: #1a1a1a; color: var(--color-acento-rojo); border-color: var(--color-acento-rojo); }
+
+/* inventario */
+.cesta-visual {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: var(--radio-borde);
+}
+
+.item-icono {
+    width: 60px;
+    height: 60px;
+    background: #1a1a1a;
+    padding: 8px;
+    /* cuadrado con bordes (reutilizable) */
+    border-radius: 8px;
+    border: 1px solid #333;
+    transition: var(--transicion-suave);
+    position: relative;
+}
+
+/* pasar el ratón */
+.item-icono:hover {
+    transform: scale(1.2);
+    border-color: var(--color-acento-rojo);
+    z-index: 10;
+}
