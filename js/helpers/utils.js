@@ -1,4 +1,7 @@
-// Funciones que podemos reusar en cualquier parte del proyecto.
+/**
+ * Funciones que se pueden reusar en cualquier parte del proyecto.
+ */
+
 /**
  * Devuelve un número entero aleatorio entre un mínimo y un máximo (ambos incluidos).
  * @param {number} min - Valor mínimo.
