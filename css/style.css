@@ -143,3 +143,47 @@ button:hover {
     gap: 25px;
     margin: 30px 0;
 }
+
+/* tarjetas */
+.tarjeta-producto, .card-enemigo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: var(--transicion-suave);
+    /* degradado */
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+    border: 1px solid #333;
+    border-radius: var(--radio-borde);
+    padding: 15px;
+}
+
+/* hover sombreado */
+.tarjeta-producto:hover, .card-enemigo:hover {
+    transform: translateY(-5px); /* resaltar */
+    border-color: var(--color-acento-azul);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.tarjeta-producto img, .card-enemigo img {
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8));
+}
+
+.precio {
+    font-size: 1.6rem;
+    color: var(--color-acento-azul);
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.tags { display: flex; gap: 5px; margin-bottom: 10px; }
+.tag { font-size: 0.7rem; padding: 3px 8px; background: #000; border: 1px solid #333; border-radius: 4px; }
+
+.comprado {
+    border-color: var(--color-exito);
+    background: rgba(0, 255, 106, 0.05);
+}
+.comprado button { background: #1a1a1a; color: var(--color-acento-rojo); border-color: var(--color-acento-rojo); }
