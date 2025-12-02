@@ -63,3 +63,83 @@ h1 {
     color: transparent;
     text-shadow: 0 5px 15px rgba(255, 0, 56, 0.2);
 }
+
+/* componentes*/
+
+/* panel "carbono" */
+.glass-panel {
+    background: var(--color-panel);
+    border: var(--borde-fino);
+    border-left: 4px solid var(--color-acento-rojo);
+    padding: 25px;
+    box-shadow: var(--sombra-elevada);
+    position: relative;
+    border-radius: var(--radio-borde); /* esquinas */
+}
+
+button {
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1rem;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: var(--transicion-suave);
+    background: #2a2a2a;
+    color: white;
+    border-radius: var(--radio-borde);
+    border: 1px solid #333;
+}
+
+/* mejora para que se hunda*/
+button:active {
+    transform: translateX(2px) translateY(2px);
+    filter: brightness(0.8);
+}
+
+.btn-primario, .btn-neon {
+    background: white;
+    color: black;
+    border-bottom: 4px solid var(--color-acento-rojo);
+}
+
+.btn-rojo {
+    background: var(--color-acento-rojo);
+    color: white;
+}
+
+/* hover lateral */
+button:hover {
+    transform: translateY(-3px); /* se mueve arriba */
+    background: var(--color-acento-rojo);
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 0, 56, 0.4);
+    border-bottom: 4px solid #a30024;
+}
+
+.escena {
+    display: none;
+    width: 100%;
+    max-width: 1000px;
+    animation: aparecer 0.5s ease-out;
+}
+.escena.activa { display: block; }
+
+/* layout (responsive)*/
+.contenedor-central {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.grid-productos, .grid-enemigos {
+    display: grid;
+    /* tarjeta minimo */
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
