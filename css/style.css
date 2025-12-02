@@ -217,3 +217,85 @@ button:hover {
     border-color: var(--color-acento-rojo);
     z-index: 10;
 }
+
+.interfaz-combate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    overflow: hidden;
+}
+
+.vs {
+    font-size: 4rem;
+    font-weight: 900;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-acento-rojo);
+    opacity: 0.5;
+}
+
+.panel-jugador, .panel-enemigo { width: 40%; text-align: center; }
+
+.avatar-grande, .avatar-batalla {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    /*circulo con borde (reutilizable)*/
+    border-radius: 50%;
+    border: 3px solid var(--color-acento-rojo);
+    background: #222;
+    margin-bottom: 15px;
+}
+
+/* animaciones de entrada */
+.slide-left { animation: turboLeft 0.7s ease-out forwards; }
+.slide-right { animation: turboRight 0.7s ease-out forwards; }
+
+@keyframes turboLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes turboRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* log telemetría */
+.caja-log {
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    background: #000;
+    border: 1px solid #333;
+    padding: 10px;
+    margin-top: 20px;
+    border-left: 3px solid var(--color-acento-azul);
+}
+.log-linea { border-bottom: 1px solid #111; padding: 6px; color: #888; }
+.log-linea strong { color: #fff; }
+
+/* extras y animaciones */
+.icono-feedback {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 2.5rem; color: var(--color-exito); font-weight: 900;
+    animation: subirDesvanecer 0.8s forwards; pointer-events: none;
+}
+@keyframes subirDesvanecer { to { transform: translate(-50%, -150%); opacity: 0; } }
+
+/* items */
+.bounce-in { animation: popIn 0.4s ease-out; }
+@keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+@keyframes aparecer { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* responsive */
+@media (max-width: 720px) {
+    .interfaz-combate { flex-direction: column; gap: 30px; }
+    .panel-jugador, .panel-enemigo { width: 100%; }
+    .vs { transform: rotate(90deg); margin: 10px 0; font-size: 3rem; }
+    h1 { font-size: 2rem; }
+}
+
+@media (max-width: 360px) {
+    /* ajustes para moviles */
+    body { padding: 10px; }
+    .glass-panel { padding: 15px; }
+    .grid-productos { grid-template-columns: 1fr; }
+    button { font-size: 0.9rem; padding: 12px; }
+}
