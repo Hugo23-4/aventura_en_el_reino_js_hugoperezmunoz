@@ -62,6 +62,9 @@ h1 {
     -webkit-background-clip: text;
     color: transparent;
     text-shadow: 0 5px 15px rgba(255, 0, 56, 0.2);
+    
+    /* ANIMACIÓN AÑADIDA DEL FINAL (unificada aquí) */
+    animation: brilloTitulo 3s infinite alternate;
 }
 
 /* componentes*/
@@ -118,6 +121,41 @@ button:hover {
     color: white;
     box-shadow: 0 0 15px rgba(255, 0, 56, 0.4);
     border-bottom: 4px solid #a30024;
+}
+
+/* mejora del menu inicial */
+#escena-inicio {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    min-height: 80vh;
+}
+
+/* Unificado: estilos base + mejora de tarjeta flotante */
+#escena-inicio .tarjeta-jugador {
+    min-width: 320px;
+    background: linear-gradient(145deg, #1a1a1a, #050505);
+    border: 1px solid var(--color-acento-rojo);
+    box-shadow: 0 0 30px rgba(255, 0, 56, 0.15);
+    padding: 30px;
+    transform: scale(1.1);
+    /* para que la tarjeta flota suavemente */
+    animation: flotarHeroe 3s ease-in-out infinite;
+}
+
+#escena-inicio h2 {
+    font-size: 2.2rem;
+    color: white;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--color-acento-rojo);
+    letter-spacing: 3px;
+}
+
+#btn-ir-mercado {
+    font-size: 1.2rem;
+    padding: 20px;
+    margin-top: 30px;
+    animation: pulsoBoton 2s infinite;
 }
 
 .escena {
@@ -248,6 +286,36 @@ button:hover {
     margin-bottom: 15px;
 }
 
+/* organización de las estadisticas */
+.stat-fila {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+.stat-fila:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.valor {
+    color: var(--color-acento-azul);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* puntos en verdesr */
+.stat-fila.puntos .valor {
+    color: var(--color-exito);
+}
+
 /* animaciones de entrada */
 .slide-left { animation: turboLeft 0.7s ease-out forwards; }
 .slide-right { animation: turboRight 0.7s ease-out forwards; }
@@ -267,8 +335,29 @@ button:hover {
     margin-top: 20px;
     border-left: 3px solid var(--color-acento-azul);
 }
-.log-linea { border-bottom: 1px solid #111; padding: 6px; color: #888; }
+
+/* delay de batalla */
+.log-linea { 
+    opacity: 0;
+    animation: aparecerTexto 0.3s ease-out forwards;
+    border-bottom: 1px solid #111; 
+    padding: 6px; 
+    color: #888; 
+}
 .log-linea strong { color: #fff; }
+
+.resultado-titulo {
+    opacity: 0;
+    animation: aparecerTexto 0.5s ease-out forwards;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.5rem;
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+.ganador { color: var(--color-exito); border: 1px solid var(--color-exito); padding: 10px; }
+.perdedor { color: var(--color-acento-rojo); border: 1px solid var(--color-acento-rojo); padding: 10px; }
+.pts { color: white; font-weight: bold; margin-left: 10px; }
 
 /* extras y animaciones */
 .icono-feedback {
@@ -283,6 +372,28 @@ button:hover {
 @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
 @keyframes aparecer { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes flotarHeroe {
+    0% { transform: scale(1.1) translateY(0); }
+    50% { transform: scale(1.1) translateY(-10px); }
+    100% { transform: scale(1.1) translateY(0); }
+}
+
+@keyframes brilloTitulo {
+    from { filter: drop-shadow(0 0 5px var(--color-acento-rojo)); }
+    to { filter: drop-shadow(0 0 15px var(--color-acento-rojo)); }
+}
+
+@keyframes pulsoBoton {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 56, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 0, 56, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 56, 0); }
+}
+
+@keyframes aparecerTexto {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 /* responsive */
 @media (max-width: 720px) {
