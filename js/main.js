@@ -283,7 +283,8 @@ const iniciarBatalla = () => {
         
         btnContinuar.onclick = finalizarJuego;
     }
-    logContainer.appendChild(resultadoTitulo);
+    //para que aparezca al principio
+    logContainer.prepend(resultadoTitulo);
     actualizarStatsUI();
 };
 
