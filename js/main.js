@@ -250,7 +250,7 @@ const iniciarBatalla = () => {
     resultadoTitulo.style.animationDelay = `${tiempoTotal}s`;
 
     if (resultado.jugadorGana) {
-        resultadoTitulo.textContent = `<h3>¡Victoria<h3> <span class="pts">+${resultado.puntos} PTS</span>`;
+        resultadoTitulo.innerHTML = `<h3>¡Victoria!</h3> <span class="pts">+${resultado.puntos} PTS</span>`;
         resultadoTitulo.classList.add ('ganador');
         jugador.sumarPuntos(resultado.puntos);
         indiceEnemigoActual++; // avanzar, siguiente enemigo
