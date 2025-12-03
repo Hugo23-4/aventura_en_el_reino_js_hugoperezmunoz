@@ -44,10 +44,10 @@ const actualizarStatsUI = () => {
     
     contenedoresStats.forEach(contenedor => {
         contenedor.innerHTML = `
-            <p>Vida: ${jugador.obtenerVidaTotal()}</p>
-            <p>Ataque: ${jugador.obtenerAtaqueTotal()}</p>
-            <p>Defensa: ${jugador.obtenerDefensaTotal()}</p>
-            <p>Puntos: ${jugador.puntos}</p>
+            <div class="stat-fila"><span class="label">VIDA</span> <span class="valor">${jugador.obtenerVidaTotal()}</span></div>
+            <div class="stat-fila"><span class="label">ATAQUE</span> <span class="valor">${jugador.obtenerAtaqueTotal()}</span></div>
+            <div class="stat-fila"><span class="label">DEFENSA</span> <span class="valor">${jugador.obtenerDefensaTotal()}</span></div>
+            <div class="stat-fila puntos"><span class="label">PUNTOS</span> <span class="valor">${jugador.puntos}</span></div>
         `;
     });
     
@@ -122,7 +122,10 @@ const cargarMercado = () => {
         tarjeta.innerHTML = `
             <img src="assets/items/${producto.imagen}" alt="${producto.nombre}">
             <h3>${producto.nombre}</h3>
-            <p class="tipo">${producto.tipo}</p>
+            <div class="tags">
+                <span class="tag">${producto.tipo}</span>
+                <span class="tag">${producto.rareza}</span>
+            </div>
             <p class="bonus">${producto.obtenerDescripcionBonus()}</p>
             <p class="precio">${producto.obtenerPrecioFormateado()}</p>
             <button class="btn-accion">${yaComprado ? 'Retirar' : 'Añadir'}</button>
@@ -212,6 +215,17 @@ const iniciarBatalla = () => {
 
     const enemigoActual = enemigos[indiceEnemigoActual];
 
+    //para la imagen del jugador
+    if (panelJugador) {
+        panelJugador.innerHTML = `
+            <h3>${jugador.nombre}</h3>
+            <img src="assets/avatars/${jugador.avatar}" 
+                 alt="${jugador.nombre}" 
+                 class="avatar-batalla">
+            <div class="stats-jugador"></div>
+        `;
+    }
+
     // Renderizar imagen y datos del enemigo actual en la zona de batalla
     if (panelEnemigo) {
         panelEnemigo.innerHTML = `
@@ -226,13 +240,14 @@ const iniciarBatalla = () => {
 
     const resultado = combatir(jugador, enemigoActual);
 
-    const velocidadLectura = 0.8;
+    // delay 5s
+    const velocidadLectura = 0.2; 
 
     // Log
     resultado.log.forEach((linea, index) => {
         const p = document.createElement('p');
         // Retraso animación (Diseño)
-        p.style.animationDelay = `${index * 0.1}s`;
+        p.style.animationDelay = `${index * velocidadLectura}s`;
         p.className = 'log-linea';
 
         const colorAtacante = linea.atacante === jugador.nombre ? '#00d9ff' : '#ff0038';
@@ -259,8 +274,8 @@ const iniciarBatalla = () => {
         setTimeout(() => {
             btnContinuar.textContent = "Siguiente Batalla";
             btnContinuar.style.display = 'block';
-            // scroll acia abajo
-            logContainer.scollTop = logContainer.scrollHeight;
+            // scroll acia abajo - CORREGIDO (era scollTop)
+            logContainer.scrollTop = logContainer.scrollHeight;
         }, tiempoTotal * 1000);
 
         btnContinuar.onclick = () => {
@@ -274,10 +289,12 @@ const iniciarBatalla = () => {
         resultadoTitulo.innerHTML= `<h3>Derrota...</h3>`;
         resultadoTitulo.classList.add('perdedor');
         
-        btnContainer.style.display = 'none';
+        // CORREGIDO: era btnContainer (error) -> btnContinuar
+        btnContinuar.style.display = 'none';
         setTimeout(() => {
             btnContinuar.textContent = "Ver Resultados";
             btnContinuar.style.display = "block";
+            // CORREGIDO: Añadido scroll aquí también
             logContainer.scrollTop = logContainer.scrollHeight;
         }, tiempoTotal * 1000);
         
