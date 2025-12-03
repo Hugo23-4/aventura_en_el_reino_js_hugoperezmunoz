@@ -197,7 +197,7 @@ const iniciarBatalla = () => {
     if(panelJugador && panelEnemigo) {
         panelJugador.classList.remove('slide-left');
         panelEnemigo.classList.remove('slide-right');
-        void panelJugador.offsetWidth;
+        void panelJugador.offsetWidth; // reiniciar la animacion
         panelJugador.classList.add('slide-left');
         panelEnemigo.classList.add('slide-right');
     }
@@ -226,26 +226,43 @@ const iniciarBatalla = () => {
 
     const resultado = combatir(jugador, enemigoActual);
 
+    const velocidadLectura = 0.8;
+
     // Log
     resultado.log.forEach((linea, index) => {
         const p = document.createElement('p');
         // Retraso animación (Diseño)
         p.style.animationDelay = `${index * 0.1}s`;
         p.className = 'log-linea';
-        p.textContent = `Turno ${linea.turno}: ${linea.atacante} ataca a ${linea.atacado} causando ${linea.dano} daño. Vida restante: ${linea.vidaRestante}`;
+
+        const colorAtacante = linea.atacante === jugador.nombre ? '#00d9ff' : '#ff0038';
+        p.innerHTML = `<strong style="color:${colorAtacante}">${linea.atacante}</strong> ataca y causa <strong>${linea.dano}</strong> daño. Vida restante: ${linea.vidaRestante}`;
+        
         logContainer.appendChild(p);
     });
 
+    // Calculamos cuando terminan de salir todas las líneas
+    const tiempoTotal = resultado.log.length * velocidadLectura;
+
     // resultado combate
-    const resultadoTitulo = document.createElement('h3');
+    const resultadoTitulo = document.createElement('div');
+    resultadoTitulo.className = 'resultado-titulo';
+    resultadoTitulo.style.animationDelay = `${tiempoTotal}s`;
+
     if (resultado.jugadorGana) {
-        resultadoTitulo.textContent = `¡Victoria contra ${enemigoActual.nombre}! Has ganado ${resultado.puntos} puntos.`;
-        resultadoTitulo.style.color = '#2ecc71';
+        resultadoTitulo.textContent = `<h3>¡Victoria<h3> <span class="pts">+${resultado.puntos} PTS</span>`;
+        resultadoTitulo.classList.add ('ganador');
         jugador.sumarPuntos(resultado.puntos);
         indiceEnemigoActual++; // avanzar, siguiente enemigo
         
-        btnContinuar.textContent = "Siguiente Batalla";
-        btnContinuar.style.display = 'block';
+        btnContinuar.style.display = 'none';
+        setTimeout(() => {
+            btnContinuar.textContent = "Siguiente Batalla";
+            btnContinuar.style.display = 'block';
+            // scroll acia abajo
+            logContainer.scollTop = logContainer.scrollHeight;
+        }, tiempoTotal * 1000);
+
         btnContinuar.onclick = () => {
              if (indiceEnemigoActual < enemigos.length) {
                  iniciarBatalla();
@@ -254,13 +271,19 @@ const iniciarBatalla = () => {
              }
         };
     } else {
-        resultadoTitulo.textContent = "Has sido derrotado...";
-        resultadoTitulo.style.color = '#e74c3c';
-        btnContinuar.textContent = "Ver Resultados";
-        btnContinuar.style.display = 'block';
+        resultadoTitulo.innerHTML= `<h3>Derrota...</h3>`;
+        resultadoTitulo.classList.add('perdedor');
+        
+        btnContainer.style.display = 'none';
+        setTimeout(() => {
+            btnContinuar.textContent = "Ver Resultados";
+            btnContinuar.style.display = "block";
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }, tiempoTotal * 1000);
+        
         btnContinuar.onclick = finalizarJuego;
     }
-    logContainer.prepend(resultadoTitulo);
+    logContainer.appendChild(resultadoTitulo);
     actualizarStatsUI();
 };
 
