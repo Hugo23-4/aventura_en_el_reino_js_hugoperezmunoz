@@ -14,6 +14,10 @@ let indiceEnemigoActual = 0;
 
 // DOM
 
+/**
+ * Muestra una escena concreta y oculta las demás usando CSS.
+ * @param {string} idEscena - El ID del elemento HTML que queremos mostrar.
+ */
 const mostrarEscena = (idEscena) => {
     // transición de entrada (Diseño)
     document.querySelectorAll('.escena').forEach(e => {
@@ -31,6 +35,9 @@ const mostrarEscena = (idEscena) => {
     }
 };
 
+/**
+ * Actualiza la información visual del jugador (vida, daño...) y su inventario en el HTML.
+ */
 const actualizarStatsUI = () => {
     // Buscamos los elementos span donde van los números
     const contenedoresStats = document.querySelectorAll('.stats-jugador');
@@ -68,6 +75,9 @@ const actualizarStatsUI = () => {
 // ESCENAS
 
 // Escena 1: Inicialización
+/**
+ * Configura la partida: crea al jugador, la tienda y los enemigos al arrancar.
+ */
 const iniciarJuego = () => {
     jugador = new Jugador("Cazador", "cazador.png");
     
@@ -86,6 +96,9 @@ const iniciarJuego = () => {
 };
 
 // Escena 2: Renderizar el Mercado
+/**
+ * Pinta los productos en el HTML de la tienda y gestiona los clics de compra.
+ */
 const cargarMercado = () => {
     const contenedorTienda = document.getElementById('tienda-productos');
     contenedorTienda.innerHTML = ''; // limpiar
@@ -146,6 +159,9 @@ const cargarMercado = () => {
 };
 
 // Escena 4: Renderizar lista de Enemigos
+/**
+ * Genera las tarjetas visuales de los enemigos disponibles.
+ */
 const cargarEnemigos = () => {
     const contenedorEnemigos = document.getElementById('lista-enemigos');
     contenedorEnemigos.innerHTML = '';
@@ -167,6 +183,9 @@ const cargarEnemigos = () => {
 };
 
 // Escena 5: Sistema de Batallas
+/**
+ * Controla toda la pantalla de combate: visuales, log de texto y turnos.
+ */
 const iniciarBatalla = () => {
     mostrarEscena('escena-batallas');
     const logContainer = document.getElementById('log-batalla');
@@ -246,6 +265,9 @@ const iniciarBatalla = () => {
 };
 
 // Escena 6: Final y Ranking
+/**
+ * Muestra la pantalla de fin de juego con el resultado.
+ */
 const finalizarJuego = () => {
     const rango = distinguirJugador(jugador.puntos, 500); // Umbral 500
     document.getElementById('rango-final').textContent = `Rango alcanzado: ${rango}`;

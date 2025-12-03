@@ -1,3 +1,7 @@
+/**
+ * Guarda los valores fijos del juego para usarlos en otros archivos.
+ */
+
 export const tipos_de_producto = {
     ARMA: 'Arma',
     ARMADURA: 'Armadura',
