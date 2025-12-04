@@ -47,8 +47,9 @@ const actualizarStatsUI = () => {
             <div class="stat-fila"><span class="label">VIDA</span> <span class="valor">${jugador.obtenerVidaTotal()}</span></div>
             <div class="stat-fila"><span class="label">ATAQUE</span> <span class="valor">${jugador.obtenerAtaqueTotal()}</span></div>
             <div class="stat-fila"><span class="label">DEFENSA</span> <span class="valor">${jugador.obtenerDefensaTotal()}</span></div>
+            <div class="stat-fila"><span class="label">ORO</span> <span class="valor" style="color:#ffd700">${jugador.dinero} $</span></div>
             <div class="stat-fila puntos"><span class="label">PUNTOS</span> <span class="valor">${jugador.puntos}</span></div>
-        `;
+            `;
     });
     
     // inventario
@@ -72,14 +73,46 @@ const actualizarStatsUI = () => {
     });
 };
 
+const validarCreacion = () => {
+    const nombreInput = document.getElementById('input-nombre-creacion').value;
+    const ataqueInput = parseInt(document.getElementById('input-ataque').value) || 0;
+    const defensaInput = parseInt(document.getElementById('input-defensa').value) || 0;
+    const vidaInput = parseInt(document.getElementById('input-vida').value) || 100;
+    const errorMsg = document.getElementById('error-msg');
+
+    const nombreRegex = /^[A-Z][a-zA-Z\s]{0,19}$/;
+    
+    if (!nombreRegex.test(nombreInput) || nombreInput.trim().length === 0) {
+        errorMsg.textContent = "Error: Nombre debe empezar por mayúscula, solo letras, máx 20 caracteres.";
+        errorMsg.style.display = 'block';
+        return;
+    }
+
+    const puntosGastados = ataqueInput + defensaInput + (vidaInput - 100);
+    
+    if (puntosGastados > 10) {
+        errorMsg.textContent = `Error: Has gastado ${puntosGastados} puntos. Máximo permitido: 10.`;
+        errorMsg.style.display = 'block';
+        return;
+    }
+
+    if (vidaInput < 100) {
+        errorMsg.textContent = "Error: La vida no puede ser menor a 100.";
+        errorMsg.style.display = 'block';
+        return;
+    }
+
+    iniciarJuego(nombreInput, ataqueInput, defensaInput, vidaInput);
+};
+
 // ESCENAS
 
 // Escena 1: Inicialización
 /**
  * Configura la partida: crea al jugador, la tienda y los enemigos al arrancar.
  */
-const iniciarJuego = () => {
-    jugador = new Jugador("Cazador", "cazador.png");
+const iniciarJuego = (nombre, atq, def, vid) => {
+    jugador = new Jugador(nombre, "cazador.png", atq, def, vid);
     
     inventarioTienda = aplicarDescuentoAleatorio(obtenerProductosBase());
     
@@ -137,20 +170,39 @@ const cargarMercado = () => {
             if (jugador.inventario.some(p => p.nombre === producto.nombre)) {
                 // Retirar (filtro todos menos este)
                 jugador.inventario = jugador.inventario.filter(p => p.nombre !== producto.nombre);
+                
+                jugador.dinero += producto.precio;
+                
                 boton.textContent = 'Añadir';
                 tarjeta.classList.remove('comprado');
+                actualizarStatsUI();
             } else {
-                // Añadir
-                jugador.agregarAlInventario(producto);
-                boton.textContent = 'Retirar';
-                tarjeta.classList.add('comprado');
+                if (jugador.dinero >= producto.precio) {
+                    jugador.dinero -= producto.precio;
+                    jugador.agregarAlInventario(producto);
+                    boton.textContent = 'retirar'
+                    tarjeta.classList.add('comprado');
+
+                    const feedback = document.createElement('div');
+                    feedback.className = 'icono-feedback';
+                    feedback.textContent = '+1';
+                    tarjeta.appendChild(feedback);
+                    setTimeout(() => feedback.remove(), 1000);
+                    actualizarStatsUI();
+                } else {
+                    alert ("Te has quedado sin monedas");
+                }
+                // // Añadir
+                // jugador.agregarAlInventario(producto);
+                // boton.textContent = 'Retirar';
+                // tarjeta.classList.add('comprado');
                 
-                // Feedback visual de +1 (Diseño)
-                const feedback = document.createElement('div');
-                feedback.className = 'icono-feedback';
-                feedback.textContent = '+1';
-                tarjeta.appendChild(feedback);
-                setTimeout(() => feedback.remove(), 1000);
+                // // Feedback visual de +1 (Diseño)
+                // const feedback = document.createElement('div');
+                // feedback.className = 'icono-feedback';
+                // feedback.textContent = '+1';
+                // tarjeta.appendChild(feedback);
+                // setTimeout(() => feedback.remove(), 1000);
             }
             actualizarStatsUI();
         });
@@ -314,6 +366,14 @@ const finalizarJuego = () => {
     document.getElementById('rango-final').textContent = `Rango alcanzado: ${rango}`;
     document.getElementById('puntos-finales').textContent = `Puntuación Final: ${jugador.puntos}`;
     mostrarEscena('escena-final');
+    const recordGuardado = localStorage.getItem ('record_averiguado')
+
+    if (jugador.puntos > recordGuardado) {
+        localStorage.setItem('record_aventura', jugador.puntos);
+        alert (`Nuevo Record. tu puntuacion ha sido guardada: ${jugador.puntos}`);
+    } else {
+        alert (`Tu puntuacion: ${jugador.puntos}. Record actual: ${recordGuardado}`);
+    }
 
     // Confeti final (Diseño)
     if (window.confetti) {
@@ -334,11 +394,15 @@ const finalizarJuego = () => {
 
 // eventos globales
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('btn-crear-jugador').addEventListener('click', validarCreacion);
     document.getElementById('btn-ir-mercado').addEventListener('click', cargarMercado);
     document.getElementById('btn-ir-stats').addEventListener('click', () => mostrarEscena('escena-stats'));
     document.getElementById('btn-ir-enemigos').addEventListener('click', cargarEnemigos);
     document.getElementById('btn-iniciar-batallas').addEventListener('click', iniciarBatalla);
     document.getElementById('btn-reiniciar').addEventListener('click', () => location.reload());
-
-    iniciarJuego();
+    document.getElementById('btn-ver-ranking').addEventListener('click', () => {
+        const ranking = JSON.parse(localStorage.getItem('ranking_aventura'));
+        console.table(ranking);
+        alert("Ranking mostrado en la consola del navegador (F12)");
+    });
 });

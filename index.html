@@ -16,7 +16,44 @@
 </head>
 <body>
 
-    <main id="escena-inicio" class="escena activa">
+    <main id="escena-creacion" class="escena activa">
+        <h1>USUARIO</h1>
+        <div class="glass-panel" style="max-width: 500px; margin: 0 auto; text-align: left;">
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display:block; color:var(--color-acento-azul); margin-bottom:5px;">NOMBRE:</label>
+                <input type="text" id="input-nombre-creacion" placeholder="" 
+                       style="width:100%; padding:10px; background:#000; border:1px solid #333; color:white;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <p style="color:#888; font-size:0.9rem;">PUNTOS DISPONIBLES: <span id="puntos-restantes" style="color:var(--color-exito); font-weight:bold;">10</span></p>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <label>ATAQUE:</label>
+                    <input type="number" id="input-ataque" value="0" min="0" max="10" 
+                           style="width:60px; padding:5px; background:#000; border:1px solid #333; color:white;">
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <label>DEFENSA:</label>
+                    <input type="number" id="input-defensa" value="0" min="0" max="10" 
+                           style="width:60px; padding:5px; background:#000; border:1px solid #333; color:white;">
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <label>VIDA (Base 100):</label>
+                    <input type="number" id="input-vida" value="100" min="100" max="110" 
+                           style="width:60px; padding:5px; background:#000; border:1px solid #333; color:white;">
+                </div>
+            </div>
+
+            <button id="btn-crear-jugador" class="btn-primario">COMENZAR LA AVENTURA</button>
+            <p id="error-msg" style="color:var(--color-acento-rojo); margin-top:10px; display:none;"></p>
+        </div>
+    </main>
+
+    <main id="escena-inicio" class="escena activa"> <!--mirar-->
         <h1>Aventura en el Reino JS</h1>
         <div class="contenedor-central">
             <div class="tarjeta-jugador glass-panel">
@@ -46,7 +83,12 @@
         <div class="contenedor-central">
             <div class="tarjeta-jugador glass-panel">
                 <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
-                <h2>Cazador (Equipado)</h2>
+                <!--<h2>Cazador (Equipado)</h2>!-->
+
+                <!--style="background:transparent; border:1px solid #ff0038; color:white; padding:10px; text-align:center; font-size:1.5rem; margin-bottom:20px;">-->
+                
+                
+
                 <div class="stats-jugador"></div>
             </div>
             <div class="cesta-visual glass-panel"></div>
@@ -95,6 +137,8 @@
         </div>
         <div class="botonera">
             <button id="btn-reiniciar" class="btn-primario">Volver a Jugar</button>
+            <button id="btn-ver-ranking" class="btn-neon">Mostrar el ranking</button>
+            <!--falta-->
         </div>
     </main>
 

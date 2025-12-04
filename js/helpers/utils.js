@@ -22,3 +22,16 @@ export const obtenerElementoAleatorio = (array) => {
     const indice = Math.floor(Math.random() * array.length);
     return array[indice];
 };
+
+export const guardarRanking = (nombre, puntos, monedas) => {
+    let ranking = JSON.parse(localStorage.getItem('ranking_aventura')) || [];
+    
+    ranking.push({
+        nombre: nombre,
+        puntos: puntos,
+        monedas: monedas,
+        fecha: new Date().toLocaleString()
+    });
+
+    localStorage.setItem('ranking_aventura', JSON.stringify(ranking));
+};

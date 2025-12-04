@@ -8,13 +8,19 @@ export class Jugador {
      * @param {string} nombre - El nick del usuario.
      * @param {string} avatar - Ruta a la imagen del personaje.
      */
-    constructor(nombre, avatar) {
+    constructor(nombre, avatar, defensaInicial, ataqueInicial, vidaInicial) {
         this.nombre = nombre;
         this.avatar = avatar;
+
+        this.vidaBase = vidaInicial;
+        this.ataqueBase = ataqueInicial;
+        this.defensaBase = defensaInicial;
         
-        this.vida = 100; 
+
+        this.vidaBase = vidaInicial; 
         this.puntos = 0;
-        
+        this.dinero = 500;
+
         this.inventario = []; 
     }
 
@@ -43,7 +49,7 @@ export class Jugador {
      * @returns {number} El ataque total acumulado.
      */
     obtenerAtaqueTotal() {
-        let ataqueTotal = 0;
+        let ataqueTotal = this.ataqueBase;
 
         for (const item of this.inventario) {
             if (item.tipo === 'Arma') {
@@ -58,7 +64,7 @@ export class Jugador {
      * @returns {number} La defensa total.
      */
     obtenerDefensaTotal() {
-        let defensaTotal = 0;
+        let defensaTotal = this.defensaBase;
 
         for (const item of this.inventario) {
             if (item.tipo === 'Armadura') {
@@ -74,7 +80,7 @@ export class Jugador {
      * @returns {number} Vida total calculada.
      */
     obtenerVidaTotal() {
-        let vidaTotal = this.vida; // Empezamos con la vida base (100)
+        let vidaTotal = this.vidaBase;
 
         for (const item of this.inventario) {
             if (item.tipo === 'Consumible') {
