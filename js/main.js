@@ -95,6 +95,13 @@ const iniciarJuego = () => {
     mostrarEscena('escena-inicio');
 };
 
+// //añadido
+// const cargarDiseño = () => {
+//     const contenedorDiseño = document.getElementById('defensa-diseño');
+//     contenedorDiseño.innerHTML = ''; // limpiar
+// }
+
+
 // Escena 2: Renderizar el Mercado
 /**
  * Pinta los productos en el HTML de la tienda y gestiona los clics de compra.
@@ -339,6 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-ir-enemigos').addEventListener('click', cargarEnemigos);
     document.getElementById('btn-iniciar-batallas').addEventListener('click', iniciarBatalla);
     document.getElementById('btn-reiniciar').addEventListener('click', () => location.reload());
+    // document.getElementById('btn-diseño').addEventListener('click', ('defensa-diseño'));
 
     iniciarJuego();
 });

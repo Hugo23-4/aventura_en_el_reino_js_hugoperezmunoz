@@ -18,7 +18,12 @@
 
     <main id="escena-inicio" class="escena activa">
         <h1>Aventura en el Reino JS</h1>
-        <div class="contenedor-central">
+        
+            <img src="assets/defensa/moneda.png" alt="moneda" class="moneda-1 slide-top">
+            <img src="assets/defensa/moneda.png" alt="moneda" class="moneda-2">
+            <img src="assets/defensa/moneda.png" alt="moneda" class="moneda-3">
+        
+            <div class="contenedor-central">
             <div class="tarjeta-jugador glass-panel">
                 <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
                 <h2>Cazador</h2>
@@ -28,6 +33,7 @@
         <div class="botonera">
             <button id="btn-ir-mercado" class="btn-primario">Ir al Mercado</button>
         </div>
+        <img src="assets/defensa/monedero.png" alt="monedero" class="monedero-monedero slide-left2">
     </main>
 
     <main id="escena-mercado" class="escena">
@@ -75,6 +81,7 @@
             <div class="panel-enemigo glass-panel slide-right">
                 <h3>Enemigo</h3>
                 <img src="assets/avatars/espada_combate.png" alt="Combate" style="width: 50px; opacity: 0.5;">
+                <h4> 500 </h4>
             </div>
         </div>
 
@@ -98,5 +105,23 @@
         </div>
     </main>
 
+    <h1>CONFIGURACIÓN</h1>
+    <div class="contenedor-central">
+        <div class="glass-panel" style="width: 100%; max-width: 400px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333;">
+                <span>""</span>
+                <span style="color: var(--color-exito);">ACTIVADO</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span>""</span>
+                <span style="color: var(--color-acento-rojo);">DESACTIVADO</span>
+            </div>
+        </div>
+    </div>
+    <div class="botonera">
+        <button class="btn-primario" onclick="document.getElementById('escena-ajustes').classList.remove('activa'); document.getElementById('escena-inicio').classList.add('activa');">REINICAR</button>
+    </div>
+
+    
 </body>
 </html>

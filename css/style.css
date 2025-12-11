@@ -286,6 +286,41 @@ button:hover {
     margin-bottom: 15px;
 }
 
+.monedero-monedero {
+    width: 100px;
+    height: 120px;
+    margin-left: 2%;
+    margin-right: 1%;
+    display: flex;
+}
+
+/* .monedero-monedero .cover {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+} */
+
+.moneda-1 {
+    width: 70px;
+    height: 70px;
+    position: calc(0, 0, 10); /*esta mal*/
+}
+
+.moneda-2 {
+    width: 70px;
+    height: 70px;
+    position: calc(0, 0, 10);
+}
+
+.moneda-3 {
+    width: 70px;
+    height: 70px;
+    position: calc(0, 0, 10);
+}
+
 /* organización de las estadisticas */
 .stat-fila {
     display: flex;
@@ -319,9 +354,14 @@ button:hover {
 /* animaciones de entrada */
 .slide-left { animation: turboLeft 0.7s ease-out forwards; }
 .slide-right { animation: turboRight 0.7s ease-out forwards; }
+.slide-left2 { animation: turboLeft2 2.1s ease-out forwards; }
+.slide-top { animation: turboTop2 2.1s ease-out forwards; }
 
 @keyframes turboLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes turboRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes turboLeft2 { from { transform: translateX(-180%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slide-top { from { transform: translateY(-180%); opacity: 0; } to { transform: translateY(-50); opacity: 1; } }
+
 
 /* log telemetría */
 .caja-log {
