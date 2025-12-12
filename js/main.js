@@ -47,6 +47,9 @@ const actualizarStatsUI = () => {
             <div class="stat-fila"><span class="label">VIDA</span> <span class="valor">${jugador.obtenerVidaTotal()}</span></div>
             <div class="stat-fila"><span class="label">ATAQUE</span> <span class="valor">${jugador.obtenerAtaqueTotal()}</span></div>
             <div class="stat-fila"><span class="label">DEFENSA</span> <span class="valor">${jugador.obtenerDefensaTotal()}</span></div>
+
+            <div class="stat-fila"><span class="label">ORO</span> <span class="valor" style="color: gold;">${jugador.dinero}</span></div>
+
             <div class="stat-fila puntos"><span class="label">PUNTOS</span> <span class="valor">${jugador.puntos}</span></div>
         `;
     });
@@ -74,12 +77,51 @@ const actualizarStatsUI = () => {
 
 // ESCENAS
 
-// Escena 1: Inicialización
+/**
+ * Validacion y comienzo
+ */
+const validarYEmpezar = () => {
+    const nombre = document.getElementById('input-nombre-creacion').value;
+    const atk = parseInt(document.getElementById('input-ataque').value);
+    const def = parseInt(document.getElementById('input-defensa').value);
+    const vid = parseInt(document.getElementById('input-vida').value);
+    const errorMsg = document.getElementById('error-msg');
+
+    // mayúscula, solo letras/espacios, max 20, no solo espacios.
+    const regexNombre = /^[A-Z][a-zA-Z\s]{0,19}$/;
+    if (!regexNombre.test(nombre) || nombre.trim().length === 0) {
+        errorMsg.textContent = "Nombre inválido: Debe empezar por mayúscula, solo letras y máx 20 caracteres.";
+        errorMsg.style.display = 'block';
+        return;
+    }
+
+    // validación Stats
+    // El input vida ya tiene min="100", así que restamos 100 para contar los puntos extra gastados
+    const sumaTotal = atk + def + (vid - 100);
+    if (sumaTotal > 10) {
+        errorMsg.textContent = "Has gastado más de 10 puntos extra.";
+        errorMsg.style.display = 'block';
+        return;
+    }
+    
+    if (vid < 100) {
+         errorMsg.textContent = "La vida no puede ser menor de 100.";
+         errorMsg.style.display = 'block';
+         return;
+    }
+
+    // Ocultar error si todo va bien
+    errorMsg.style.display = 'none';
+    iniciarJuego(nombre, atk, def, vid);
+};
+
+// Escena 1: Inicialización (Modificada para recibir parámetros)
 /**
  * Configura la partida: crea al jugador, la tienda y los enemigos al arrancar.
  */
-const iniciarJuego = () => {
-    jugador = new Jugador("Cazador", "cazador.png");
+const iniciarJuego = (nombre, atk, def, vid) => {
+    // Usamos los datos del formulario
+    jugador = new Jugador(nombre, "cazador.png", atk, def, vid);
     
     inventarioTienda = aplicarDescuentoAleatorio(obtenerProductosBase());
     
@@ -137,20 +179,31 @@ const cargarMercado = () => {
             if (jugador.inventario.some(p => p.nombre === producto.nombre)) {
                 // Retirar (filtro todos menos este)
                 jugador.inventario = jugador.inventario.filter(p => p.nombre !== producto.nombre);
+                // devolver dinero
+                jugador.dinero += producto.precio;
+                
                 boton.textContent = 'Añadir';
                 tarjeta.classList.remove('comprado');
             } else {
-                // Añadir
-                jugador.agregarAlInventario(producto);
-                boton.textContent = 'Retirar';
-                tarjeta.classList.add('comprado');
-                
-                // Feedback visual de +1 (Diseño)
-                const feedback = document.createElement('div');
-                feedback.className = 'icono-feedback';
-                feedback.textContent = '+1';
-                tarjeta.appendChild(feedback);
-                setTimeout(() => feedback.remove(), 1000);
+                // validar dinero
+                if (jugador.dinero >= producto.precio) {
+                    jugador.agregarAlInventario(producto);
+                    
+                    // restar precio
+                    jugador.dinero -= producto.precio;
+
+                    boton.textContent = 'Retirar';
+                    tarjeta.classList.add('comprado');
+                    
+                    // Feedback visual "+1"
+                    const feedback = document.createElement('div');
+                    feedback.className = 'icono-feedback';
+                    feedback.textContent = '+1';
+                    tarjeta.appendChild(feedback);
+                    setTimeout(() => feedback.remove(), 1000);
+                } else {
+                    alert("No tienes suficiente dinero."); // Feedback simple
+                }
             }
             actualizarStatsUI();
         });
@@ -265,16 +318,21 @@ const iniciarBatalla = () => {
     resultadoTitulo.style.animationDelay = `${tiempoTotal}s`;
 
     if (resultado.jugadorGana) {
-        resultadoTitulo.innerHTML = `<h3>¡Victoria!</h3> <span class="pts">+${resultado.puntos} PTS</span>`;
-        resultadoTitulo.classList.add ('ganador');
         jugador.sumarPuntos(resultado.puntos);
         indiceEnemigoActual++; // avanzar, siguiente enemigo
         
+        // dinero ganado (10 jefe, 5 normal)
+        const monedasGanadas = enemigoActual.multiplicador ? 10 : 5;
+        jugador.dinero += monedasGanadas;
+        
+        resultadoTitulo.innerHTML = `<h3>¡VICTORIA!</h3> <span class="pts">+${resultado.puntos} PTS</span> <span style="color:gold;">+${monedasGanadas} ORO</span>`;
+        resultadoTitulo.classList.add ('ganador');
+
         btnContinuar.style.display = 'none';
         setTimeout(() => {
             btnContinuar.textContent = "Siguiente Batalla";
             btnContinuar.style.display = 'block';
-            // scroll acia abajo - CORREGIDO (era scollTop)
+            // scroll hacia abajo
             logContainer.scrollTop = logContainer.scrollHeight;
         }, tiempoTotal * 1000);
 
@@ -310,9 +368,35 @@ const iniciarBatalla = () => {
  * Muestra la pantalla de fin de juego con el resultado.
  */
 const finalizarJuego = () => {
-    const rango = distinguirJugador(jugador.puntos, 500); // Umbral 500
+    // puntos totales = puntos + dinero
+    const puntuacionTotal = jugador.puntos + jugador.dinero;
+    const rango = distinguirJugador(puntuacionTotal, 500); // Umbral 500
+    
     document.getElementById('rango-final').textContent = `Rango alcanzado: ${rango}`;
-    document.getElementById('puntos-finales').textContent = `Puntuación Final: ${jugador.puntos}`;
+    document.getElementById('puntos-finales').textContent = `Puntuación Final: ${puntuacionTotal}`;
+    
+    // guardar Ranking
+    const registro = {
+        nombre: jugador.nombre,
+        puntos: puntuacionTotal,
+        monedas: jugador.dinero
+    };
+    // guardamos un array de records o solo el ultimo
+    let ranking = JSON.parse(localStorage.getItem('ranking_dwec')) || [];
+    ranking.push(registro);
+    localStorage.setItem('ranking_dwec', JSON.stringify(ranking));
+
+    // botón para mostrar ranking por consola (Si no existe ya)
+    const botonera = document.querySelector('#escena-final .botonera');
+    if (!document.getElementById('btn-ver-ranking')) {
+        const btnRanking = document.createElement('button');
+        btnRanking.id = 'btn-ver-ranking';
+        btnRanking.className = 'btn-primario';
+        btnRanking.textContent = "Ver Ranking (Consola)";
+        btnRanking.onclick = () => console.table(JSON.parse(localStorage.getItem('ranking_dwec')));
+        botonera.appendChild(btnRanking);
+    }
+
     mostrarEscena('escena-final');
 
     // Confeti final (Diseño)
@@ -340,5 +424,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-iniciar-batallas').addEventListener('click', iniciarBatalla);
     document.getElementById('btn-reiniciar').addEventListener('click', () => location.reload());
 
-    iniciarJuego();
+    // listener creación jugador
+    document.getElementById('btn-crear-jugador').addEventListener('click', validarYEmpezar);
+    
+    // listener visual para actualizar puntos restantes
+    const inputs = document.querySelectorAll('#escena-creacion input[type="number"]');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+           const a = parseInt(document.getElementById('input-ataque').value) || 0; 
+           const d = parseInt(document.getElementById('input-defensa').value) || 0; 
+           const v = parseInt(document.getElementById('input-vida').value) || 100;
+           // Restar 100 a vida porque es la base
+           const restantes = 10 - (a + d + (v - 100));
+           const span = document.getElementById('puntos-restantes');
+           if (span) span.textContent = restantes;
+        });
+    });
 });

@@ -87,14 +87,41 @@
         <div class="cesta-visual footer-inventario"></div>
     </main>
 
-    <main id="escena-final" class="escena">
-        <h1>Fin de la Aventura</h1>
-        <div class="resultado-caja glass-panel">
-            <h2 id="rango-final"></h2>
-            <h3 id="puntos-finales"></h3>
-        </div>
-        <div class="botonera">
-            <button id="btn-reiniciar" class="btn-primario">Volver a Jugar</button>
+    <!--añadido-->
+    <main id="escena-creacion" class="escena activa">
+        <h1>CREA TU LEYENDA</h1>
+        <div class="contenedor-central">
+            <div class="glass-panel" style="width: 100%; max-width: 500px; text-align: left;">
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; color:var(--color-acento-azul); margin-bottom:5px;">NOMBRE:</label>
+                    <input type="text" id="input-nombre-creacion" placeholder="Ej: Guerrero" 
+                           style="width:100%; padding:10px; background:#1a1a1a; border:1px solid #333; color:white;">
+                    <small style="color:#888;">(Mayúscula inicial, solo letras, máx 20)</small>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <p style="color:#888;">PUNTOS DISPONIBLES: <span id="puntos-restantes" style="color:var(--color-exito); font-weight:bold;">10</span></p>
+                    
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <label>ATAQUE (Base 0):</label>
+                        <input type="number" id="input-ataque" value="0" min="0" style="width:60px;">
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <label>DEFENSA (Base 0):</label>
+                        <input type="number" id="input-defensa" value="0" min="0" style="width:60px;">
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between;">
+                        <label>VIDA (Base 100):</label>
+                        <input type="number" id="input-vida" value="100" min="100" style="width:60px;">
+                    </div>
+                </div>
+
+                <button id="btn-crear-jugador" class="btn-primario">COMENZAR AVENTURA</button>
+                <p id="error-msg" style="color:var(--color-acento-rojo); margin-top:10px; display:none;"></p>
+            </div>
         </div>
     </main>
 

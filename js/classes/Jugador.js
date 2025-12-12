@@ -4,13 +4,20 @@ export class Jugador {
 
     /**
      * Configura al personaje desde cero.
-     * Empezamos con la vida al maximo (100) y el inventario vacío.
      * @param {string} nombre - El nick del usuario.
      * @param {string} avatar - Ruta a la imagen del personaje.
+     * * @param {number} ataqueExtra - Puntos extra de ataque.
+     * @param {number} defensaExtra - Puntos extra de defensa.
+     * @param {number} vidaExtra - Puntos extra de vida (base 100).
      */
-    constructor(nombre, avatar) {
+    constructor(nombre, avatar, ataqueExtra = 0, defensaExtra = 0, vidaExtra = 100) {
         this.nombre = nombre;
         this.avatar = avatar;
+
+        // añadido
+        this.ataqueBase = ataqueExtra;
+        this.defensaBase = defensaExtra;
+        this.vidaBase = vidaExtra;
         
         this.vida = 100; 
         this.puntos = 0;
@@ -43,14 +50,12 @@ export class Jugador {
      * @returns {number} El ataque total acumulado.
      */
     obtenerAtaqueTotal() {
-        let ataqueTotal = 0;
+        let total = let.ataqueBase;
 
-        for (const item of this.inventario) {
-            if (item.tipo === 'Arma') {
-                ataqueTotal += item.bonus;
-            }
-        }
-        return ataqueTotal;
+        this.inventario.forEach(item => {
+            if (item.tipo === 'Arma') total += item.bonus;
+        });
+        return total;
     }
 
     /**
@@ -58,14 +63,12 @@ export class Jugador {
      * @returns {number} La defensa total.
      */
     obtenerDefensaTotal() {
-        let defensaTotal = 0;
+        let total = this.defensaBase;
 
-        for (const item of this.inventario) {
-            if (item.tipo === 'Armadura') {
-                defensaTotal += item.bonus;
-            }
-        }
-        return defensaTotal;
+        this.inventario.forEach(item => {
+            if (item.tipo === 'Armadura') total += item.bonus;
+        });
+        return total;
     }
 
     /**
@@ -74,14 +77,12 @@ export class Jugador {
      * @returns {number} Vida total calculada.
      */
     obtenerVidaTotal() {
-        let vidaTotal = this.vida; // Empezamos con la vida base (100)
+        let total = this.vidaBase;
 
-        for (const item of this.inventario) {
-            if (item.tipo === 'Consumible') {
-                vidaTotal += item.bonus;
-            }
-        }
-        return vidaTotal;
+        this.inventario.forEach(item => {
+            if (item.tipo === 'Consumible') total += item.bonus; // Nota: Si son consumibles de un solo uso, esto cambiaría, pero para stats totales sirve.
+        });
+        return total;
     }
 
     /**
