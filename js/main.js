@@ -53,6 +53,11 @@ const actualizarStatsUI = () => {
             <div class="stat-fila puntos"><span class="label">PUNTOS</span> <span class="valor">${jugador.puntos}</span></div>
         `;
     });
+
+    const textoMonedero = document.getElementById('texto-dinero-saco');
+    if (textoMonedero) {
+        textoMonedero.textContent = jugador.dinero;
+    }
     
     // inventario
     const contenedoresCesta = document.querySelectorAll('.cesta-visual');
@@ -82,9 +87,9 @@ const actualizarStatsUI = () => {
  */
 const validarYEmpezar = () => {
     const nombre = document.getElementById('input-nombre-creacion').value;
-    const atk = parseInt(document.getElementById('input-ataque').value);
-    const def = parseInt(document.getElementById('input-defensa').value);
-    const vid = parseInt(document.getElementById('input-vida').value);
+    const atk = parseInt(document.getElementById('input-ataque').value) || 0;
+    const def = parseInt(document.getElementById('input-defensa').value) || 0;
+    const vid = parseInt(document.getElementById('input-vida').value) || 100;
     const errorMsg = document.getElementById('error-msg');
 
     // mayúscula, solo letras/espacios, max 20, no solo espacios.
@@ -128,7 +133,7 @@ const iniciarJuego = (nombre, atk, def, vid) => {
     enemigos = [
         new Enemigo("Goblin", "goblin.png", 8, 60),
         new Enemigo("Lobo", "lobo.png", 9, 80),
-        new Enemigo("Bandidos", "bandido.png", 12, 90),
+        new Enemigo("Bandido", "bandido.png", 12, 90),
         new Jefe("Dragón", "dragon.png", 20, 150, 1.5)
     ];
     indiceEnemigoActual = 0;
@@ -327,6 +332,7 @@ const iniciarBatalla = () => {
         
         resultadoTitulo.innerHTML = `<h3>¡VICTORIA!</h3> <span class="pts">+${resultado.puntos} PTS</span> <span style="color:gold;">+${monedasGanadas} ORO</span>`;
         resultadoTitulo.classList.add ('ganador');
+        lanzarAnimacionMonedas();
 
         btnContinuar.style.display = 'none';
         setTimeout(() => {
@@ -347,12 +353,10 @@ const iniciarBatalla = () => {
         resultadoTitulo.innerHTML= `<h3>Derrota...</h3>`;
         resultadoTitulo.classList.add('perdedor');
         
-        // CORREGIDO: era btnContainer (error) -> btnContinuar
         btnContinuar.style.display = 'none';
         setTimeout(() => {
             btnContinuar.textContent = "Ver Resultados";
             btnContinuar.style.display = "block";
-            // CORREGIDO: Añadido scroll aquí también
             logContainer.scrollTop = logContainer.scrollHeight;
         }, tiempoTotal * 1000);
         
@@ -381,21 +385,25 @@ const finalizarJuego = () => {
         puntos: puntuacionTotal,
         monedas: jugador.dinero
     };
-    // guardamos un array de records o solo el ultimo
-    let ranking = JSON.parse(localStorage.getItem('ranking_dwec')) || [];
-    ranking.push(registro);
-    localStorage.setItem('ranking_dwec', JSON.stringify(ranking));
 
-    // botón para mostrar ranking por consola (Si no existe ya)
-    const botonera = document.querySelector('#escena-final .botonera');
-    if (!document.getElementById('btn-ver-ranking')) {
-        const btnRanking = document.createElement('button');
-        btnRanking.id = 'btn-ver-ranking';
-        btnRanking.className = 'btn-primario';
-        btnRanking.textContent = "Ver Ranking (Consola)";
-        btnRanking.onclick = () => console.table(JSON.parse(localStorage.getItem('ranking_dwec')));
-        botonera.appendChild(btnRanking);
-    }
+    // pintar Tabla Ranking
+    const ranking = JSON.parse(localStorage.getItem('ranking_dwec')) || [];
+    ranking.push(registro); // Añadir registro nuevo
+    localStorage.setItem('ranking_dwec', JSON.stringify(ranking)); // Guardar actualizado
+    ranking.sort((a, b) => b.puntos - a.puntos);
+    
+    const cuerpoTabla = document.getElementById('cuerpo-tabla');
+    cuerpoTabla.innerHTML = '';
+    
+    ranking.forEach(partida => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${partida.nombre}</td>
+            <td style="color: var(--color-exito); font-weight:bold;">${partida.puntos}</td>
+            <td style="color: gold;">${partida.monedas}</td>
+        `;
+        cuerpoTabla.appendChild(fila);
+    });
 
     mostrarEscena('escena-final');
 
@@ -414,6 +422,32 @@ const finalizarJuego = () => {
             confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
         }, 250);
     }
+};
+
+/**
+ * Lanza la animación de 3 monedas cayendo.
+ */
+const lanzarAnimacionMonedas = () => {
+    const posiciones = ['25%', '50%', '75%'];
+    
+    posiciones.forEach((posHorizontal, index) => {
+        // creamos la imagen
+        const monedaHTML = `
+            <img 
+                src="assets/imagenes/moneda.png" 
+                alt="moneda"
+                class="moneda-animada" 
+                style="left: ${posHorizontal}; animation-delay: ${index * 0.2}s;"
+            >
+        `;
+        // insertamos en el body
+        document.body.insertAdjacentHTML('beforeend', monedaHTML);
+    });
+    
+    // limpieza: las borramos del DOM después de que acabe la animación (2s + delays)
+    setTimeout(() => {
+        document.querySelectorAll('.moneda-animada').forEach(m => m.remove());
+    }, 3000);
 };
 
 // eventos globales

@@ -412,3 +412,96 @@ button:hover {
 }
 
 /*final css*/
+
+/*defensa*/
+/* monedero */
+#contenedor-monedero {
+    position: fixed;
+    bottom: 1%;
+    left: 2%;
+    width: 120px;
+    height: auto;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: entrarMonedero 1.5s ease-out forwards;
+}
+
+.img-monedero {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#texto-dinero-saco {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #3e2723;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+@keyframes entradaSaco {
+    from { left: -200px; opacity: 0; } /* empieza fuera */
+    to { left: 2%; opacity: 1; } /* termina en su sitio */
+}
+
+/* monedas cayendo */
+.moneda-animada {
+    position: fixed;
+    top: -100px; /* empieza arriba oculta */
+    width: 60px;
+    z-index: 2000;
+    
+    animation: caidaMoneda 2s linear forwards;
+}
+
+@keyframes caidaMoneda {
+    0% {
+        top: -100px;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    80% {
+        opacity: 1; 
+    }
+    100% {
+        top: 50vh;
+        transform: rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ranking tabla */
+.tabla-container {
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#tabla-ranking {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: 'Roboto', sans-serif;
+}
+
+#tabla-ranking th {
+    background-color: var(--color-acento-azul);
+    color: black;
+    padding: 15px;
+    text-transform: uppercase;
+}
+
+#tabla-ranking td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    color: #eee;
+}
