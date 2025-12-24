@@ -80,6 +80,27 @@ const actualizarStatsUI = () => {
     });
 };
 
+// Animacion monedas (Defensa Diseño
+const lanzarAnimacionMonedas = () => {
+    const posiciones = ['25%', '50%', '75%'];
+    posiciones.forEach((posHorizontal, index) => {
+        const monedaHTML = `
+            <img src="assets/imagenes/moneda.png" 
+                 class="moneda-animada" 
+                 style="left: ${posHorizontal}; animation-delay: ${index * 0.2}s;" 
+                 alt="moneda">
+        `;
+        document.body.insertAdjacentHTML('beforeend', monedaHTML);
+    });
+    
+    // Limpieza
+    setTimeout(() => {
+        document.querySelectorAll('.moneda-animada').forEach(m => m.remove());
+    }, 3000);
+};
+
+
+// LÓGICA DE JUEGO
 // ESCENAS
 
 /**
@@ -387,7 +408,7 @@ const finalizarJuego = () => {
     };
 
     // pintar Tabla Ranking
-    const ranking = JSON.parse(localStorage.getItem('ranking_dwec')) || [];
+    let ranking = JSON.parse(localStorage.getItem('ranking_dwec')) || [];
     ranking.push(registro); // Añadir registro nuevo
     localStorage.setItem('ranking_dwec', JSON.stringify(ranking)); // Guardar actualizado
     ranking.sort((a, b) => b.puntos - a.puntos);
@@ -405,49 +426,30 @@ const finalizarJuego = () => {
         cuerpoTabla.appendChild(fila);
     });
 
+    // Botón consola (defensa cliente)
+    const botonera = document.querySelector('#escena-final .botonera');
+    if (!document.getElementById('btn-ver-ranking')) {
+        const btnRanking = document.createElement('button');
+        btnRanking.id = 'btn-ver-ranking';
+        btnRanking.className = 'btn-primario';
+        btnRanking.textContent = "Ver Ranking (Consola)";
+        btnRanking.onclick = () => console.table(JSON.parse(localStorage.getItem('ranking_dwec')));
+        btnRanking.style.marginTop = "10px";
+        botonera.appendChild(btnRanking);
+    }
+
     mostrarEscena('escena-final');
 
     // Confeti final (Diseño)
     if (window.confetti) {
-        var duration = 3 * 1000;
-        var animationEnd = Date.now() + duration;
-        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-        var randomInRange = (min, max) => Math.random() * (max - min) + min;
-
-        var interval = setInterval(function() {
-            var timeLeft = animationEnd - Date.now();
-            if (timeLeft <= 0) return clearInterval(interval);
-            var particleCount = 50 * (timeLeft / duration);
-            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-        }, 250);
+        var duration = 3000;
+        var end = Date.now() + duration;
+        (function frame() {
+            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+            if (Date.now() < end) requestAnimationFrame(frame);
+        }());
     }
-};
-
-/**
- * Lanza la animación de 3 monedas cayendo.
- */
-const lanzarAnimacionMonedas = () => {
-    const posiciones = ['25%', '50%', '75%'];
-    
-    posiciones.forEach((posHorizontal, index) => {
-        // creamos la imagen
-        const monedaHTML = `
-            <img 
-                src="assets/imagenes/moneda.png" 
-                alt="moneda"
-                class="moneda-animada" 
-                style="left: ${posHorizontal}; animation-delay: ${index * 0.2}s;"
-            >
-        `;
-        // insertamos en el body
-        document.body.insertAdjacentHTML('beforeend', monedaHTML);
-    });
-    
-    // limpieza: las borramos del DOM después de que acabe la animación (2s + delays)
-    setTimeout(() => {
-        document.querySelectorAll('.moneda-animada').forEach(m => m.remove());
-    }, 3000);
 };
 
 // eventos globales
@@ -471,7 +473,10 @@ document.addEventListener('DOMContentLoaded', () => {
            // Restar 100 a vida porque es la base
            const restantes = 10 - (a + d + (v - 100));
            const span = document.getElementById('puntos-restantes');
-           if (span) span.textContent = restantes;
+           if (span) {
+               span.textContent = restantes;
+               span.style.color = restantes < 0 ? 'red' : 'var(--color-exito)';
+           }
         });
     });
 });
