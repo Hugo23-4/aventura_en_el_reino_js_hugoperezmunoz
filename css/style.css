@@ -2,25 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Roboto:wght@400;500&display=swap');
 
 :root {
-    --color-fondo: #0a0a0a;
-    --color-panel: #161616;
+    --color-fondo: #0f0f0f;
+    --color-panel: #1a1a1a;
     --color-texto: #e5e5e5;
     
-    /* Acentos */
+    /* acentos */
     --color-acento-rojo: #ff0038;
     --color-acento-azul: #00d9ff;
     --color-exito: #00ff6a;
     
     /* estetica */
-    --borde-fino: 1px solid rgba(255, 255, 255, 0.1);
-    --sombra-elevada: 0 4px 10px rgba(0, 0, 0, 0.5);
-    
+    --borde-fino: 1px solid rgba(255, 255, 255, 0.15);
+    --sombra-elevada: 0 8px 20px rgba(0, 0, 0, 0.6);
     --radio-borde: 8px;
     
     --transicion-suave: all 0.3s ease-out;
 }
 
-/* estructura base */
+/* estructura base (SPA) */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -29,18 +28,62 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--color-fondo);
-    /* fibra de carbono */
-    background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
     color: var(--color-texto);
-    min-height: 100vh;
+    
+    /* altura fija sin scroll global */
+    height: 100vh; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    
+    /* fondo patrón */
+    background-color: #121212;
+    background-image: radial-gradient(#2a2a2a 2px, transparent 2px);
+    background-size: 16px 16px; 
+}
+
+/* estructura layout (10vh - 70vh - 20vh) */
+
+/* 1. header (10vh) */
+.header-principal {
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.8);
+    border-bottom: 2px solid var(--color-acento-rojo);
+    z-index: 100;
+}
+
+/* 2. main (70vh) */
+.zona-juego {
+    height: 70vh;
+    position: relative;
+    overflow-y: auto; /* scroll interno */
+    padding: 20px;
+    
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-acento-rojo) #000;
+}
+
+/* 3. footer (20vh) */
+.footer-inventario {
+    height: 20vh;
+    background: #050505;
+    border-top: 1px solid #333;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-x: hidden; /* que no tenga croll horizontal */
-    justify-content: flex-start;
-    padding: 20px;
-    gap: 20px;
+    justify-content: center;
+    padding: 10px;
+    z-index: 100;
+}
+
+.footer-inventario h3 {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+    font-family: 'Chakra Petch', sans-serif;
 }
 
 /* titulos */
@@ -48,241 +91,191 @@ h1, h2, h3 {
     font-family: 'Chakra Petch', sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 1rem;
     text-align: center;
 }
 
-/* idea obtenida de intenet revisar porque da error (tutorial) */
 h1 {
-    font-size: 2.8rem;
-    /* efecto de texto */
-    /* degradado dentro de las letras */
-    background: linear-gradient(90deg, #fff 50%, var(--color-acento-rojo) 50%);
-    background-clip: text;
+    font-size: 2rem;
+    /* efecto degradado texto */
+    background: linear-gradient(90deg, #fff, var(--color-acento-rojo));
     -webkit-background-clip: text;
     color: transparent;
-    text-shadow: 0 5px 15px rgba(255, 0, 56, 0.2);
-    
-    /* ANIMACIÓN AÑADIDA DEL FINAL (unificada aquí) */
     animation: brilloTitulo 3s infinite alternate;
 }
 
-/* componentes*/
+h2 {
+    margin-bottom: 20px;
+    color: var(--color-acento-azul);
+}
 
-/* panel "carbono" */
+/* componentes */
+
+/* panel "carbono" / cristal */
 .glass-panel {
-    background: var(--color-panel);
+    background: rgba(22, 22, 22, 0.95);
     border: var(--borde-fino);
     border-left: 4px solid var(--color-acento-rojo);
-    padding: 25px;
+    padding: 20px;
+    border-radius: var(--radio-borde);
     box-shadow: var(--sombra-elevada);
-    position: relative;
-    border-radius: var(--radio-borde); /* esquinas */
 }
 
 button {
     font-family: 'Chakra Petch', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 1rem;
-    padding: 15px 30px;
+    padding: 12px 25px;
     border: none;
     cursor: pointer;
-    width: 100%;
-    margin-top: 15px;
-    transition: var(--transicion-suave);
-    background: #2a2a2a;
-    color: white;
-    border-radius: var(--radio-borde);
-    border: 1px solid #333;
-}
-
-/* mejora para que se hunda*/
-button:active {
-    transform: translateX(2px) translateY(2px);
-    filter: brightness(0.8);
-}
-
-.btn-primario, .btn-neon {
-    background: white;
-    color: black;
+    background: #e5e5e5;
+    color: #000;
+    border-radius: 4px;
     border-bottom: 4px solid var(--color-acento-rojo);
+    transition: var(--transicion-suave);
+    margin-top: 10px;
 }
 
-.btn-rojo {
-    background: var(--color-acento-rojo);
-    color: white;
+button:hover { 
+    transform: translateY(-2px); 
+    background: #fff; 
+    box-shadow: 0 5px 15px rgba(255,0,56,0.3); 
 }
 
-/* hover lateral */
-button:hover {
-    transform: translateY(-3px); /* se mueve arriba */
-    background: var(--color-acento-rojo);
-    color: white;
-    box-shadow: 0 0 15px rgba(255, 0, 56, 0.4);
-    border-bottom: 4px solid #a30024;
+button:active { 
+    transform: translateY(2px); 
+    border-bottom-width: 0; 
 }
 
-/* mejora del menu inicial */
-#escena-inicio {
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center;
-    min-height: 80vh;
+.btn-rojo { 
+    background: var(--color-acento-rojo); 
+    color: white; 
+    border-bottom: 4px solid #a30024; 
 }
 
-/* Unificado: estilos base + mejora de tarjeta flotante */
-#escena-inicio .tarjeta-jugador {
-    min-width: 320px;
-    background: linear-gradient(145deg, #1a1a1a, #050505);
-    border: 1px solid var(--color-acento-rojo);
-    box-shadow: 0 0 30px rgba(255, 0, 56, 0.15);
-    padding: 30px;
-    transform: scale(1.1);
-    /* para que la tarjeta flota suavemente */
-    animation: flotarHeroe 3s ease-in-out infinite;
-}
-
-#escena-inicio h2 {
-    font-size: 2.2rem;
-    color: white;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px var(--color-acento-rojo);
-    letter-spacing: 3px;
-}
-
-#btn-ir-mercado {
-    font-size: 1.2rem;
-    padding: 20px;
-    margin-top: 30px;
-    animation: pulsoBoton 2s infinite;
-}
-
+/* escenas */
 .escena {
     display: none;
     width: 100%;
     max-width: 1000px;
-    animation: aparecer 0.5s ease-out;
+    margin: 0 auto;
+    animation: aparecer 0.4s ease-out;
 }
 .escena.activa { display: block; }
 
-/* layout (responsive)*/
+/* layout contenedores */
 .contenedor-central {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
-.grid-productos, .grid-enemigos {
+.botonera-central {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* grid productos */
+.grid-productos {
     display: grid;
-    /* tarjeta minimo */
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
-    margin: 30px 0;
+    /* varias columnas */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.grid-enemigos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 /* tarjetas */
-.tarjeta-producto, .card-enemigo {
+.tarjeta-producto {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    height: 100%; /* igualar alturas en grid */
+    justify-content: space-between;
     transition: var(--transicion-suave);
-    /* degradado */
-    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
-    border: 1px solid #333;
-    border-radius: var(--radio-borde);
-    padding: 15px;
 }
 
-/* hover sombreado */
-.tarjeta-producto:hover, .card-enemigo:hover {
-    transform: translateY(-5px); /* resaltar */
+.tarjeta-producto:hover {
+    transform: translateY(-5px);
     border-color: var(--color-acento-azul);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
-.tarjeta-producto img, .card-enemigo img {
-    height: 90px;
-    object-fit: contain;
-    margin-bottom: 15px;
+.tarjeta-producto img { 
+    height: 80px; 
+    object-fit: contain; 
+    margin-bottom: 10px; 
     filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8));
 }
 
-.precio {
-    font-size: 1.6rem;
-    color: var(--color-acento-azul);
-    font-weight: 700;
+.precio { 
+    font-size: 1.4rem; 
+    color: var(--color-acento-azul); 
+    font-weight: bold; 
     margin: 10px 0;
 }
-
-.tags { display: flex; gap: 5px; margin-bottom: 10px; }
-.tag { font-size: 0.7rem; padding: 3px 8px; background: #000; border: 1px solid #333; border-radius: 4px; }
 
 .comprado {
     border-color: var(--color-exito);
     background: rgba(0, 255, 106, 0.05);
 }
-.comprado button { background: #1a1a1a; color: var(--color-acento-rojo); border-color: var(--color-acento-rojo); }
+
+.card-enemigo {
+    width: 200px;
+    text-align: center;
+}
+.card-enemigo img { width: 100px; height: 100px; object-fit: contain; }
 
 /* inventario */
 .cesta-visual {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding: 15px;
-    background-color: rgba(0,0,0,0.3);
-    border-radius: var(--radio-borde);
+    gap: 10px;
+    height: 70px; /* Altura fija para las celdas */
 }
 
+/* items */
 .item-icono {
     width: 60px;
     height: 60px;
     background: #1a1a1a;
-    padding: 8px;
-    /* cuadrado con bordes (reutilizable) */
-    border-radius: 8px;
-    border: 1px solid #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 5px;
+    object-fit: contain;
     transition: var(--transicion-suave);
-    position: relative;
 }
 
-/* pasar el ratón */
-.item-icono:hover {
-    transform: scale(1.2);
-    border-color: var(--color-acento-rojo);
-    z-index: 10;
+.item-icono:hover { transform: scale(1.1); border-color: var(--color-acento-azul); }
+
+/* celda vacia (requisito: mostrar huecos) */
+.celda-vacia {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.05);
+    border: 1px dashed #444;
+    border-radius: 4px;
 }
 
-.interfaz-combate {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    overflow: hidden;
+/* tarjeta jugador (inicio/stats) */
+.tarjeta-jugador {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    background: linear-gradient(145deg, #1a1a1a, #050505);
 }
 
-.vs {
-    font-size: 4rem;
-    font-weight: 900;
-    font-style: italic;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--color-acento-rojo);
-    opacity: 0.5;
-}
-
-.panel-jugador, .panel-enemigo { width: 40%; text-align: center; }
-
-.avatar-grande, .avatar-batalla {
-    width: 130px;
-    height: 130px;
-    object-fit: cover;
-    /*circulo con borde (reutilizable)*/
+.avatar-grande {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     border: 3px solid var(--color-acento-rojo);
-    background: #222;
     margin-bottom: 15px;
 }
 
@@ -290,218 +283,126 @@ button:hover {
 .stat-fila {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     font-family: 'Chakra Petch', sans-serif;
 }
+.stat-fila:last-child { border-bottom: none; }
+.label { color: #888; font-size: 0.9rem; }
+.valor { color: var(--color-acento-azul); font-weight: bold; }
+.puntos .valor { color: var(--color-exito); }
 
-.stat-fila:last-child {
-    border-bottom: none;
+/* interfaz combate */
+.interfaz-combate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
-
-.label {
-    color: #888;
-    font-size: 0.9rem;
-    text-transform: uppercase;
+.panel-jugador, .panel-enemigo { width: 45%; text-align: center; }
+.img-enemigo-batalla { width: 100px; height: 100px; object-fit: contain; }
+.vs {
+    font-size: 3rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-acento-rojo);
+    opacity: 0.5;
 }
-
-.valor {
-    color: var(--color-acento-azul);
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-/* puntos en verdesr */
-.stat-fila.puntos .valor {
-    color: var(--color-exito);
-}
-
-/* animaciones de entrada */
-.slide-left { animation: turboLeft 0.7s ease-out forwards; }
-.slide-right { animation: turboRight 0.7s ease-out forwards; }
-
-@keyframes turboLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes turboRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
 /* log telemetría */
 .caja-log {
-    height: 200px;
+    height: 150px;
     overflow-y: auto;
     font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     background: #000;
     border: 1px solid #333;
     padding: 10px;
-    margin-top: 20px;
     border-left: 3px solid var(--color-acento-azul);
 }
+.log-linea { border-bottom: 1px solid #111; padding: 4px; color: #aaa; }
 
-/* delay de batalla */
-.log-linea { 
-    opacity: 0;
-    animation: aparecerTexto 0.3s ease-out forwards;
-    border-bottom: 1px solid #111; 
-    padding: 6px; 
-    color: #888; 
-}
-.log-linea strong { color: #fff; }
-
-.resultado-titulo {
-    opacity: 0;
-    animation: aparecerTexto 0.5s ease-out forwards;
-    text-align: center;
-    margin-top: 15px;
-    font-size: 1.5rem;
-    font-family: 'Chakra Petch', sans-serif;
-}
-
-.ganador { color: var(--color-exito); border: 1px solid var(--color-exito); padding: 10px; }
-.perdedor { color: var(--color-acento-rojo); border: 1px solid var(--color-acento-rojo); padding: 10px; }
-.pts { color: white; font-weight: bold; margin-left: 10px; }
-
-/* extras y animaciones */
-.icono-feedback {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 2.5rem; color: var(--color-exito); font-weight: 900;
-    animation: subirDesvanecer 0.8s forwards; pointer-events: none;
-}
-@keyframes subirDesvanecer { to { transform: translate(-50%, -150%); opacity: 0; } }
-
-/* items */
-.bounce-in { animation: popIn 0.4s ease-out; }
-@keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-@keyframes aparecer { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-@keyframes flotarHeroe {
-    0% { transform: scale(1.1) translateY(0); }
-    50% { transform: scale(1.1) translateY(-10px); }
-    100% { transform: scale(1.1) translateY(0); }
-}
-
-@keyframes brilloTitulo {
-    from { filter: drop-shadow(0 0 5px var(--color-acento-rojo)); }
-    to { filter: drop-shadow(0 0 15px var(--color-acento-rojo)); }
-}
-
-@keyframes pulsoBoton {
-    0% { box-shadow: 0 0 0 0 rgba(255, 0, 56, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 0, 56, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 0, 56, 0); }
-}
-
-@keyframes aparecerTexto {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* responsive */
-@media (max-width: 720px) {
-    .interfaz-combate { flex-direction: column; gap: 30px; }
-    .panel-jugador, .panel-enemigo { width: 100%; }
-    .vs { transform: rotate(90deg); margin: 10px 0; font-size: 3rem; }
-    h1 { font-size: 2rem; }
-}
-
-@media (max-width: 360px) {
-    /* ajustes para moviles */
-    body { padding: 10px; }
-    .glass-panel { padding: 15px; }
-    .grid-productos { grid-template-columns: 1fr; }
-    button { font-size: 0.9rem; padding: 12px; }
-}
-
-/*final css*/
-
-/*defensa*/
-/* monedero */
-#contenedor-monedero {
-    position: fixed;
-    bottom: 1%;
-    left: 2%;
-    width: 120px;
-    height: auto;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: entrarMonedero 1.5s ease-out forwards;
-}
-
-.img-monedero {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-#texto-dinero-saco {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    
-    font-family: 'Chakra Petch', sans-serif;
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #3e2723;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-}
-
-@keyframes entradaSaco {
-    from { left: -200px; opacity: 0; } /* empieza fuera */
-    to { left: 2%; opacity: 1; } /* termina en su sitio */
-}
-
-/* monedas cayendo */
-.moneda-animada {
-    position: fixed;
-    top: -100px; /* empieza arriba oculta */
-    width: 60px;
-    z-index: 2000;
-    
-    animation: caidaMoneda 2s linear forwards;
-}
-
-@keyframes caidaMoneda {
-    0% {
-        top: -100px;
-        transform: rotate(0deg);
-        opacity: 1;
-    }
-    80% {
-        opacity: 1; 
-    }
-    100% {
-        top: 50vh;
-        transform: rotate(720deg);
-        opacity: 0;
-    }
-}
-
-/* ranking tabla */
+/* ranking */
 .tabla-container {
+    max-height: 300px;
+    overflow-y: auto;
     margin-top: 20px;
-    border-radius: 8px;
-    overflow: hidden;
+    border: 1px solid #333;
+    border-radius: 4px;
 }
 
 #tabla-ranking {
     width: 100%;
     border-collapse: collapse;
-    background-color: rgba(0, 0, 0, 0.5);
     font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
 }
 
+/* cabecera */
 #tabla-ranking th {
+    position: sticky;
+    top: 0;
     background-color: var(--color-acento-azul);
-    color: black;
-    padding: 15px;
+    color: #000;
+    padding: 12px;
+    z-index: 2;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
-#tabla-ranking td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    text-align: center;
-    color: #eee;
+#tabla-ranking td { padding: 10px; text-align: center; color: #ccc; }
+
+/* efecto cebra */
+#tabla-ranking tr:nth-child(odd) { background-color: rgba(255, 255, 255, 0.02); }
+#tabla-ranking tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.08); }
+
+/* extras y animaciones */
+
+/* monedero */
+#contenedor-monedero {
+    position: fixed;
+    bottom: 1%;
+    left: 2%;
+    width: 100px;
+    z-index: 1000;
+    animation: entrarSaco 1.5s ease-out forwards;
+}
+.img-monedero { width: 100%; display: block; filter: drop-shadow(0 5px 5px #000); }
+#texto-dinero-saco {
+    position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'Chakra Petch', sans-serif; font-weight: bold; color: #3e2723; text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* monedas victoria */
+.moneda-animada {
+    position: fixed;
+    top: -50px;
+    width: 50px;
+    z-index: 2000;
+    animation: caerYRotar 2s linear forwards;
+}
+
+/* animaciones keyframes */
+@keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes brilloTitulo { from { filter: drop-shadow(0 0 5px var(--color-acento-rojo)); } to { filter: drop-shadow(0 0 15px var(--color-acento-rojo)); } }
+@keyframes entrarSaco { from { left: -150px; opacity: 0; } to { left: 2%; opacity: 1; } }
+@keyframes caerYRotar {
+    0% { top: -50px; transform: rotate(0deg); opacity: 1; }
+    80% { opacity: 1; }
+    100% { top: 60vh; transform: rotate(720deg); opacity: 0; }
+}
+@keyframes turboLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes turboRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+.slide-left { animation: turboLeft 0.5s ease-out forwards; }
+.slide-right { animation: turboRight 0.5s ease-out forwards; }
+.bounce-in { animation: popIn 0.3s ease-out; }
+
+/* responsive */
+@media (max-width: 600px) {
+    .interfaz-combate { flex-direction: column; }
+    .panel-jugador, .panel-enemigo { width: 100%; margin-bottom: 20px; }
+    h1 { font-size: 1.5rem; }
+    .grid-productos { grid-template-columns: 1fr; }
 }

@@ -6,155 +6,159 @@
     <title>Aventura en el Reino de JS</title>
     <link rel="icon" type="image/png" href="assets/items/espada.png">
 
-    <!-- fuentes para css: Chakra Petch y Roboto (cargadas aqui para avitar el error del navegador) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="js/main.js" type="module" defer></script>
 </head>
 <body>
 
-    <main id="escena-inicio" class="escena activa">
-        <h1>Aventura en el Reino JS</h1>
-        <div class="contenedor-central">
-            <div class="tarjeta-jugador glass-panel">
-                <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
-                <h2>Cazador</h2>
-                <div class="stats-jugador"></div>
-            </div>
-        </div>
-        <div class="botonera">
-            <button id="btn-ir-mercado" class="btn-primario">Ir al Mercado</button>
-        </div>
-    </main>
+    <header class="header-principal">
+        <h1>Aventura en el Reino de JS</h1>
+    </header>
 
-    <main id="escena-mercado" class="escena">
-        <h1>Mercado Negro</h1>
-        <div id="tienda-productos" class="grid-productos"></div>
+    <main class="zona-juego">
         
-        <div class="panel-inferior glass-panel">
-            <h3>Tu Cesta:</h3>
-            <div class="cesta-visual"></div>
-            <button id="btn-ir-stats" class="btn-primario">Confirmar Compra</button>
-        </div>
-    </main>
-
-    <main id="escena-stats" class="escena">
-        <h1>Equipo Confirmado</h1>
-        <div class="contenedor-central">
-            <div class="tarjeta-jugador glass-panel">
-                <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
-                <h2>Cazador (Equipado)</h2>
-                <div class="stats-jugador"></div>
-            </div>
-            <div class="cesta-visual glass-panel"></div>
-        </div>
-        <div class="botonera">
-            <button id="btn-ir-enemigos" class="btn-primario">Buscar Enemigos</button>
-        </div>
-    </main>
-
-    <main id="escena-enemigos" class="escena">
-        <h1>Enemigos Avistados</h1>
-        <div id="lista-enemigos" class="grid-enemigos"></div>
-        <div class="botonera">
-            <button id="btn-iniciar-batallas" class="btn-rojo">¡A Luchar!</button>
-        </div>
-    </main>
-
-    <main id="escena-batallas" class="escena">
-        <h1>Campo de Batalla</h1>
-        <div class="interfaz-combate">
-            <div class="panel-jugador glass-panel slide-left">
-                <h3>Tú</h3>
-                <div class="stats-jugador"></div>
-            </div>
-            <div class="vs">VS</div>
-            <div class="panel-enemigo glass-panel slide-right">
-                <h3>Enemigo</h3>
-                <img src="assets/avatars/espada_combate.png" alt="Combate" style="width: 50px; opacity: 0.5;">
-            </div>
-        </div>
-
-        <div id="log-batalla" class="caja-log glass-panel"></div>
-
-        <div class="botonera">
-            <button id="btn-siguiente-batalla" class="btn-primario" style="display:none;">Continuar</button>
-        </div>
-        
-        <div class="cesta-visual footer-inventario"></div>
-    </main>
-
-    <!--añadido-->
-    <main id="escena-creacion" class="escena activa">
-        <h1>CREA TU LEYENDA</h1>
-        <div class="contenedor-central">
-            <div class="glass-panel" style="width: 100%; max-width: 500px; text-align: left;">
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display:block; color:var(--color-acento-azul); margin-bottom:5px;">NOMBRE:</label>
-                    <input type="text" id="input-nombre-creacion" placeholder="Ej: Guerrero" 
-                           style="width:100%; padding:10px; background:#1a1a1a; border:1px solid #333; color:white;">
-                    <small style="color:#888;">(Mayúscula inicial, solo letras, máx 20)</small>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <p style="color:#888;">PUNTOS DISPONIBLES: <span id="puntos-restantes" style="color:var(--color-exito); font-weight:bold;">10</span></p>
+        <section id="escena-creacion" class="escena activa">
+            <div class="contenedor-central">
+                <div class="glass-panel" style="width: 100%; max-width: 500px; text-align: left;">
+                    <h2>CREA TU LEYENDA</h2>
                     
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <label>ATAQUE (Base 0):</label>
-                        <input type="number" id="input-ataque" value="0" min="0" style="width:60px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display:block; color:var(--color-acento-azul); margin-bottom:5px;">NOMBRE:</label>
+                        <input type="text" id="input-nombre-creacion" placeholder="Ej: Guerrero" 
+                               style="width:100%; padding:10px; background:#1a1a1a; border:1px solid #333; color:white;">
+                        <small style="color:#888;">(Mayúscula inicial, solo letras, máx 20)</small>
                     </div>
 
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                        <label>DEFENSA (Base 0):</label>
-                        <input type="number" id="input-defensa" value="0" min="0" style="width:60px;">
+                    <div style="margin-bottom: 20px;">
+                        <p style="color:#888;">PUNTOS DISPONIBLES: <span id="puntos-restantes" style="color:var(--color-exito); font-weight:bold;">10</span></p>
+                        
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <label>ATAQUE (Base 0):</label>
+                            <input type="number" id="input-ataque" value="0" min="0" style="width:60px;">
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <label>DEFENSA (Base 0):</label>
+                            <input type="number" id="input-defensa" value="0" min="0" style="width:60px;">
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between;">
+                            <label>VIDA (Base 100):</label>
+                            <input type="number" id="input-vida" value="100" min="100" style="width:60px;">
+                        </div>
                     </div>
 
-                    <div style="display:flex; justify-content:space-between;">
-                        <label>VIDA (Base 100):</label>
-                        <input type="number" id="input-vida" value="100" min="100" style="width:60px;">
-                    </div>
+                    <button id="btn-crear-jugador" class="btn-primario">COMENZAR AVENTURA</button>
+                    <p id="error-msg" style="color:var(--color-acento-rojo); margin-top:10px; display:none;"></p>
                 </div>
-
-                <button id="btn-crear-jugador" class="btn-primario">COMENZAR AVENTURA</button>
-                <p id="error-msg" style="color:var(--color-acento-rojo); margin-top:10px; display:none;"></p>
             </div>
-        </div>
-    </main>
+        </section>
 
-    <main id="escena-final" class="escena">
-        <h1>Fin de la Aventura</h1>
-        
-        <div class="glass-panel" style="width: 100%; max-width: 600px; margin: 0 auto;">
-            <h2 id="rango-final"></h2>
-            <h3 id="puntos-finales"></h3>
+        <section id="escena-inicio" class="escena">
+            <div class="contenedor-central">
+                <div class="tarjeta-jugador glass-panel">
+                    <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
+                    <h2 id="nombre-jugador-titulo">Cazador</h2> <div class="stats-jugador"></div>
+                </div>
+            </div>
+            <div class="botonera-central">
+                <button id="btn-ir-mercado" class="btn-primario">Ir al Mercado</button>
+            </div>
+        </section>
+
+        <section id="escena-mercado" class="escena">
+            <h2>Mercado Negro</h2>
+            <div id="tienda-productos" class="grid-productos"></div>
             
-            <div class="tabla-container">
-                <table id="tabla-ranking">
-                    <thead>
-                        <tr>
-                            <th>NOMBRE</th>
-                            <th>PUNTOS</th>
-                            <th>MONEDAS</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cuerpo-tabla">
-                        </tbody>
-                </table>
+            <div class="botonera-central" style="margin-top: 20px;">
+                <button id="btn-ir-stats" class="btn-primario">Confirmar Compra</button>
             </div>
-        </div>
+        </section>
 
-        <div class="botonera">
-            <button id="btn-reiniciar" class="btn-primario">Volver a Jugar</button>
-        </div>
+        <section id="escena-stats" class="escena">
+            <h2>Equipo Confirmado</h2>
+            <div class="contenedor-central">
+                <div class="tarjeta-jugador glass-panel">
+                    <img src="assets/avatars/cazador.png" alt="Cazador" class="avatar-grande">
+                    <h2>Cazador (Equipado)</h2>
+                    <div class="stats-jugador"></div>
+                </div>
+                </div>
+            <div class="botonera-central">
+                <button id="btn-ir-enemigos" class="btn-primario">Buscar Enemigos</button>
+            </div>
+        </section>
+
+        <section id="escena-enemigos" class="escena">
+            <h2>Enemigos Avistados</h2>
+            <div id="lista-enemigos" class="grid-enemigos"></div>
+            <div class="botonera-central">
+                <button id="btn-iniciar-batallas" class="btn-rojo">¡A Luchar!</button>
+            </div>
+        </section>
+
+        <section id="escena-batallas" class="escena">
+            <h2>Campo de Batalla</h2>
+            <div class="interfaz-combate">
+                <div class="panel-jugador glass-panel slide-left">
+                    <h3>Tú</h3>
+                    <div class="stats-jugador"></div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="panel-enemigo glass-panel slide-right">
+                    <h3>Enemigo</h3>
+                    <img src="assets/avatars/espada_combate.png" alt="Combate" class="img-enemigo-batalla">
+                </div>
+            </div>
+
+            <div id="log-batalla" class="caja-log glass-panel"></div>
+
+            <div class="botonera-central">
+                <button id="btn-siguiente-batalla" class="btn-primario" style="display:none;">Continuar</button>
+            </div>
+        </section>
+
+        <section id="escena-final" class="escena">
+            <h2>Fin de la Aventura</h2>
+            <div class="resultado-caja glass-panel">
+                <h2 id="rango-final"></h2>
+                <h3 id="puntos-finales"></h3>
+                
+                <div class="tabla-container">
+                    <table id="tabla-ranking">
+                        <thead>
+                            <tr>
+                                <th>NOMBRE</th>
+                                <th>PUNTOS</th>
+                                <th>DINERO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-tabla">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="botonera-central">
+                <button id="btn-reiniciar" class="btn-primario">Volver a Jugar</button>
+            </div>
+        </section>
+
     </main>
 
-    <div id="contenedor-monedero" class="slide-in-monedero">
-        <img src="assets/imagenes/monedero.png" alt="Monedero" class="img-monedero">
-        <span id="texto-dinero">500</span>
+    <footer class="footer-inventario">
+        <h3>INVENTARIO</h3>
+        <div class="cesta-visual" id="inventario-fijo">
+            </div>
+    </footer>
+
+    <div id="contenedor-monedero">
+        <img src="assets/imagenes/monedero.png" alt="Saco" class="img-monedero">
+        <span id="texto-dinero-saco">500</span>
     </div>
 
 </body>

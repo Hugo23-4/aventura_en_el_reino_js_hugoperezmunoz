@@ -1,83 +1,78 @@
 /**
- * Motor principal del juego: Gestiona la pelea automática turno a turno.
- * Calcula el daño, la defensa y decide quién gana y cuántos puntos se lleva el jugador.
- * * @param {Object} jugador - El personaje del usuario con su equipamiento actual.
- * @param {Object} enemigo - El rival (puede ser un Enemigo normal o un Jefe).
- * @returns {Object} Resumen completo de la batalla para pintarlo luego en el HTML.
+ * simula el combate turno a turno entre jugador y enemigo.
+ * @param {Jugador} jugador 
+ * @param {Enemigo} enemigo 
+ * @returns {Object} resultado con el log, si gana el jugador y los puntos.
  */
 export const combatir = (jugador, enemigo) => {
-    
-    // let para no modificar al personaje real
+    // clonamos las vidas para no modificar las reales
     let vidaJugador = jugador.obtenerVidaTotal();
-    const defensaJugador = jugador.obtenerDefensaTotal();
-    const ataqueJugador = jugador.obtenerAtaqueTotal();
-    
     let vidaEnemigo = enemigo.vida;
-    const ataqueEnemigo = enemigo.ataque;
-
-    const historialLog = []; 
+    
+    // stats totales
+    const ataqueJugador = jugador.obtenerAtaqueTotal();
+    const defensaJugador = jugador.obtenerDefensaTotal();
+    
+    const logCombate = [];
     let turno = 1;
 
+    // bucle de combate
     while (vidaJugador > 0 && vidaEnemigo > 0) {
         
-        vidaEnemigo = vidaEnemigo - ataqueJugador;
-        
-        // golpe
-        historialLog.push({
+        // turno jugador
+        // calculo daño simple: ataque - defensa (mínimo 1 de daño siempre)
+        // los enemigos no tienen defensa definida, asumimos 0 o un valor base
+        const danoAlEnemigo = Math.max(1, ataqueJugador); 
+        vidaEnemigo -= danoAlEnemigo;
+        if (vidaEnemigo < 0) vidaEnemigo = 0;
+
+        logCombate.push({
             turno: turno,
             atacante: jugador.nombre,
             atacado: enemigo.nombre,
-            dano: ataqueJugador,
-            vidaRestante: Math.max(0, vidaEnemigo) // evitamod que se muestre vida negativa
+            dano: danoAlEnemigo,
+            vidaRestante: vidaEnemigo
         });
 
-        if (vidaEnemigo <= 0) break;
+        if (vidaEnemigo <= 0) break; // si muere, no ataca
 
-        // daño recibido
-        const nuevaVidaCalculada = (vidaJugador + defensaJugador) - ataqueEnemigo;
-        
-        // actualizar vida
-        vidaJugador = Math.min(vidaJugador, nuevaVidaCalculada);
+        // turno enemigo
+        // la defensa del jugador reduce el ataque del enemigo
+        const danoAlJugador = Math.max(1, enemigo.ataque - (defensaJugador * 0.5)); // la defensa mitiga el 50%
+        vidaJugador -= Math.floor(danoAlJugador);
+        if (vidaJugador < 0) vidaJugador = 0;
 
-        historialLog.push({
+        logCombate.push({
             turno: turno,
             atacante: enemigo.nombre,
             atacado: jugador.nombre,
-            dano: Math.max(0, ataqueEnemigo - defensaJugador), // daño real recibido
-            vidaRestante: Math.max(0, vidaJugador)
+            dano: Math.floor(danoAlJugador),
+            vidaRestante: vidaJugador
         });
-
+        
         turno++;
-
-        // SEGURIDAD: Evitar bucles infinitos si la defensa es muy alta
-        if (turno > 100) break;
     }
 
-    // ganador y recompensas
-    let puntosObtenidos = 0;
-    let ganadorNombre = '';
+    // determinamos resultado
+    const jugadorGana = vidaJugador > 0;
+    
+    // calculo puntos: (vida restante + daño realizado) * bonificador enemigo
+    // si es jefe da mas puntos (tiene multiplicador 1.5, los normales 1)
+    // si no tiene multiplicador definido usamos 1 por defecto
+    const multi = enemigo.multiplicador || 1;
+    const puntosObtenidos = jugadorGana ? Math.floor((vidaJugador + ataqueJugador) * 10 * multi) : 0;
 
-    if (vidaJugador > 0) {
-        ganadorNombre = jugador.nombre;
-        
-        puntosObtenidos = 100 + enemigo.ataque;
-
-        // comprobar si el objeto tiene multiplicador (así sabemos si es Jefe sin importar la clase)
-        if (enemigo.multiplicador) {
-            puntosObtenidos = puntosObtenidos * enemigo.multiplicador;
-            
-            puntosObtenidos = Math.floor(puntosObtenidos);
-        }
-
+    // aplicamos daño real al jugador si sobrevive (opcional, segun dificultad)
+    // vamos a actualizar la vida del jugador al final del combate
+    if (jugadorGana) {
+        jugador.vida = vidaJugador;
     } else {
-        ganadorNombre = enemigo.nombre;
-        puntosObtenidos = 0;
+        jugador.vida = 0;
     }
 
     return {
-        ganador: ganadorNombre,
-        jugadorGana: vidaJugador > 0,
-        puntos: puntosObtenidos,
-        log: historialLog 
+        log: logCombate,
+        jugadorGana: jugadorGana,
+        puntos: puntosObtenidos
     };
 };

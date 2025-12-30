@@ -4,30 +4,32 @@ export class Jugador {
 
     /**
      * Configura al personaje desde cero.
+     * Empezamos con la vida al maximo (100) y el inventario vacío.
      * @param {string} nombre - El nick del usuario.
      * @param {string} avatar - Ruta a la imagen del personaje.
-     * * @param {number} ataqueExtra - Puntos extra de ataque.
-     * @param {number} defensaExtra - Puntos extra de defensa.
-     * @param {number} vidaExtra - Puntos extra de vida (base 100).
      */
     constructor(nombre, avatar, ataqueExtra = 0, defensaExtra = 0, vidaExtra = 100) {
         this.nombre = nombre;
         this.avatar = avatar;
 
-        // añadido
+        // añadido para la defensa (stats del formulario)
         this.ataqueBase = ataqueExtra;
         this.defensaBase = defensaExtra;
         this.vidaBase = vidaExtra;
         
-        this.vida = 100; 
+        // usamos la vida base que hemos configurado
+        this.vida = this.vidaBase; 
         this.puntos = 0;
+        
+        // dinero inicial (cliente)
+        this.dinero = 500;
         
         this.inventario = []; 
     }
 
     /**
      * Mete un objeto en la mochila.
-     * Importante: Guardamos una copia (clon) para que el objeto sea independiente de la tienda.
+     * Importante: Guardamos una copia para que el objeto sea independiente de la tienda.
      * @param {Producto} productoOriginal - El ítem que queremos guardar.
      */
     agregarAlInventario(productoOriginal) {
@@ -50,7 +52,8 @@ export class Jugador {
      * @returns {number} El ataque total acumulado.
      */
     obtenerAtaqueTotal() {
-        let total = let.ataqueBase;
+        // Sumamos la base del formulario
+        let total = this.ataqueBase;
 
         this.inventario.forEach(item => {
             if (item.tipo === 'Arma') total += item.bonus;

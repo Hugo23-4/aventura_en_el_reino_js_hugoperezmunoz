@@ -1,11 +1,11 @@
 export class Enemigo {
 
     /**
-     * Configura los stats iniciales del monstruo.
-     * @param {string} nombre - El nombre que sale en pantalla (ej: "Goblin").
-     * @param {string} avatar - La foto para la carta o la batalla.
-     * @param {number} ataque - Cuánto daño nos hace por turno.
-     * @param {number} vida - La salud que tiene que llegar a 0 para ganar.
+     * clase base para cualquier enemigo del juego.
+     * @param {string} nombre - nombre de la criatura.
+     * @param {string} avatar - imagen .png.
+     * @param {number} ataque - puntos de daño que hace.
+     * @param {number} vida - puntos de salud iniciales.
      */
     constructor(nombre, avatar, ataque, vida) {
         this.nombre = nombre;
