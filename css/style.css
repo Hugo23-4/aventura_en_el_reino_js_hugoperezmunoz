@@ -379,18 +379,29 @@ button:active {
     top: -50px;
     width: 50px;
     z-index: 2000;
-    animation: caerYRotar 2s linear forwards;
+    animation: caerYRotarHorizontal 2s linear forwards;
 }
 
 /* animaciones keyframes */
 @keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes brilloTitulo { from { filter: drop-shadow(0 0 5px var(--color-acento-rojo)); } to { filter: drop-shadow(0 0 15px var(--color-acento-rojo)); } }
 @keyframes entrarSaco { from { left: -150px; opacity: 0; } to { left: 2%; opacity: 1; } }
-@keyframes caerYRotar {
-    0% { top: -50px; transform: rotate(0deg); opacity: 1; }
-    80% { opacity: 1; }
-    100% { top: 60vh; transform: rotate(720deg); opacity: 0; }
+@keyframes caerYRotarHorizontal {
+    0% {
+        top: -50px;
+        transform: perspective(400px) rotateY(0deg);
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        top: 60vh;
+        transform: perspective(400px) rotateY(720deg);
+        opacity: 0;
+    }
 }
+
 @keyframes turboLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes turboRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
