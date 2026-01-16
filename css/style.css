@@ -382,6 +382,60 @@ button:active {
     animation: caerYRotarHorizontal 2s linear forwards;
 }
 
+#secreto-panel {
+    position:fixed;
+    bottom: -60px;
+    right: 20px;
+    width: 150px;
+    background-color: gray;
+    border: 2px solid black;
+    text-align: center;
+    padding: 0;
+    z-index: 9999;
+}
+
+#secreto-panel h3{
+    margin:0px;
+    padding: 10px;
+    background-color: #bfbfbf;
+    border-bottom: 1px solid gray;
+    font-size: 1.1rem;
+    cursor:pointer;
+    font-family: sans-serif;
+    letter-spacing: normal;
+    animation: none;
+    color: black;
+    line-height: 1.4;
+}
+
+#secreto-panel:hover {
+    transform: translateY(-58px);
+    transition: var(--transicion-suave);
+}
+
+#stars-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap:10px;
+    z-index: 9999;
+}
+
+.stars{
+    width: 30px;
+    height: 30px;
+    background-color: yellow;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 
+    50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: spin-star 3s linear infinite;
+}
+
+@keyframes spin-star {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
 /* animaciones keyframes */
 @keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes brilloTitulo { from { filter: drop-shadow(0 0 5px var(--color-acento-rojo)); } to { filter: drop-shadow(0 0 15px var(--color-acento-rojo)); } }
